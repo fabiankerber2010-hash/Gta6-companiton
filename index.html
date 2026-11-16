@@ -894,6 +894,37 @@ onAuthStateChanged(auth, async (user) => {
         premium: false,
         createdAt: new Date().toISOString()
       });
+      document.getElementById("authRegister").addEventListener("click", async () => {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    document.getElementById("authStatus").textContent = "Konto erfolgreich erstellt!";
+  } catch (error) {
+    document.getElementById("authStatus").textContent = error.message;
+  }
+});
+
+document.getElementById("authLogin").addEventListener("click", async () => {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    document.getElementById("authStatus").textContent = "Erfolgreich angemeldet!";
+  } catch (error) {
+    document.getElementById("authStatus").textContent = error.message;
+  }
+});
+
+document.getElementById("authLogout").addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    document.getElementById("authStatus").textContent = error.message;
+  }
+});
     }
   } else {
     status.textContent = "Noch nicht angemeldet.";
