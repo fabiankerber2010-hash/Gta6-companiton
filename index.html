@@ -914,13 +914,24 @@ onAuthStateChanged(auth, async (user) => {
       const profileRef = doc(db, "profiles", user.uid);
       const profileSnap = await getDoc(profileRef);
 
-      if (!profileSnap.exists()) {
-        await setDoc(profileRef, {
-          username: "Spieler",
-          premium: false,
-          createdAt: new Date().toISOString()
-        });
-      }
+    if (!profileSnap.exists()) {
+  await setDoc(profileRef, {
+    username: "Spieler",
+    premium: false,
+    createdAt: new Date().toISOString()
+  });
+
+  document.getElementById("profileName").value = "Spieler";
+} else {
+  const profileData = profileSnap.data();
+
+  document.getElementById("profileName").value =
+    profileData.username || "Spieler";
+
+  state.profile.name = profileData.username || "Spieler";
+  saveState();
+  renderProfile();
+}
     } catch (error) {
       status.textContent = "Profilfehler: " + error.message;
     }
