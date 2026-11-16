@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA6 COMPANION</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #101216;
+  color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 20px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #171a20;
+  position: sticky;
+  top: 0;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: #8ee66b;
+}
+
+nav a {
+  color: #ddd;
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 14px;
+}
+
+.hero {
+  padding: 85px 8%;
+  background: linear-gradient(110deg, #18251c, #11151b 70%);
+}
+
+.hero h1 {
+  font-size: clamp(38px, 7vw, 70px);
+  margin: 0 0 15px;
+}
+
+.hero h1 span {
+  color: #8ee66b;
+}
+
+.hero p {
+  color: #c2c7c2;
+  max-width: 550px;
+  line-height: 1.6;
+}
+
+button {
+  background: #8ee66b;
+  color: #101216;
+  border: 0;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 35px 20px;
+}
+
+h2 {
+  margin-top: 35px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: #1b2027;
+  padding: 22px;
+  border: 1px solid #303740;
+  border-radius: 13px;
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #8ee66b;
+}
+
+.card p {
+  color: #bdc3ca;
+  line-height: 1.5;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #454d58;
+  background: #1b2027;
+  color: white;
+  margin: 12px 0;
+}
+
+section {
+  scroll-margin-top: 80px;
+}
+
+.premium {
+  background: linear-gradient(120deg, #283b25, #202a32);
+  border: 1px solid #8ee66b;
+}
+
+footer {
+  text-align: center;
+  padding: 35px;
+  color: #89919b;
+  background: #171a20;
+  margin-top: 50px;
+}
+
+.small {
+  font-size: 12px;
+  color: #89919b;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">GTA6 COMPANION</div>
+  <nav>
+    <a href="#guides">Guides</a>
+    <a href="#map">Karte</a>
+    <a href="#premium">Premium</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <p>DEIN BEGLEITER DURCH LEONIDA</p>
+  <h1>WELCOME TO<br><span>GTA6 COMPANION</span></h1>
+  <p>
+    Deine unabhängige Fan-Plattform für Grand Theft Auto VI.
+    Entdecke Guides, Informationen, Orte und Geheimnisse.
+  </p>
+  <a href="#guides">
+    <button>Website entdecken</button>
+  </a>
+</section>
+
+<main>
+
+<section id="guides">
+  <h2>Entdecke GTA 6</h2>
+
+  <input
+    id="search"
+    placeholder="Suche nach Guides, Orten und Themen..."
+    oninput="searchCards()"
+  >
+
+  <div class="grid" id="cards">
+
+    <div class="card">
+      <h3>Missionen</h3>
+      <p>Missionen, Tipps und Schritt-für-Schritt-Lösungen.</p>
+    </div>
+
+    <div class="card">
+      <h3>Charaktere</h3>
+      <p>Informationen zu Lucia, Jason und weiteren Figuren.</p>
+    </div>
+
+    <div class="card">
+      <h3>Geheimnisse</h3>
+      <p>Entdecke versteckte Orte und bestätigte Geheimnisse.</p>
+    </div>
+
+    <div class="card">
+      <h3>Fahrzeuge</h3>
+      <p>Informationen zu Autos, Motorrädern und mehr.</p>
+    </div>
+
+  </div>
+</section>
+
+<section id="map">
+  <h2>Interaktive Karte</h2>
+
+  <div class="card">
+    <h3>Leonida entdecken</h3>
+    <p>
+      Die interaktive Karte ist in Planung.
+      Bestätigte Orte werden ergänzt, sobald verlässliche
+      Informationen vorliegen.
+    </p>
+  </div>
+</section>
+
+<section id="premium">
+  <h2>GTA6 COMPANION Premium</h2>
+
+  <div class="card premium">
+    <h3>Mehr Möglichkeiten. Ein besserer Überblick.</h3>
+
+    <p>• Werbefreie Nutzung</p>
+    <p>• Erweiterte Kartenfilter und eigene Markierungen</p>
+    <p>• Persönliche Checklisten und Fortschritt</p>
+    <p>• Gespeicherte Sammlungen und Cloud-Synchronisierung</p>
+    <p>• Benachrichtigungen zu neuen bestätigten Guides</p>
+
+    <p class="small">
+      Premium ist hier nur eine Vorschau.
+      Es gibt noch keine Anmeldung oder Bezahlfunktion.
+    </p>
+
+    <button onclick="alert('Premium kommt bald!')">
+      Premium ansehen
+    </button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <strong>GTA6 COMPANION</strong>
+  <p>Ein unabhängiges Fanprojekt. Nicht mit Rockstar Games verbunden.</p>
+  <p class="small">
+    Alle Inhalte werden nach Möglichkeit anhand verlässlicher Quellen geprüft.
+  </p>
+</footer>
+
+<script>
+function searchCards() {
+  const q = document.getElementById("search").value.toLowerCase();
+
+  document.querySelectorAll("#cards .card").forEach(card => {
+    card.style.display = card.innerText.toLowerCase().includes(q)
+      ? "block"
+      : "none";
+  });
+}
+</script>
+
+</body>
+</html>
