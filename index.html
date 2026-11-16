@@ -811,5 +811,43 @@
   renderTasks();
 })();
 </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCdwTb4kq0Mqi8yXFdjqsE0ZKTrk1Mq1fQ",
+  authDomain: "gta6companion-c11a5.firebaseapp.com",
+  projectId: "gta6companion-c11a5",
+  storageBucket: "gta6companion-c11a5.firebasestorage.app",
+  messagingSenderId: "621484259483",
+  appId: "1:621484259483:web:c0d2861d37975c02ad6e3e",
+  measurementId: "G-M1JP2YJ3TP"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.gtaFirebase = { auth, db };
+window.gtaAuthFunctions = {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
+};
+
+console.log("GTA6 COMPANION: Firebase verbunden!");
+</script>
 </body>
 </html>
