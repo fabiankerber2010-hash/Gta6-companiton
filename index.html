@@ -642,7 +642,8 @@
     const name = state.profile.name || 'Spieler';
     document.getElementById('sideName').textContent = name;
     document.getElementById('profileHeadingName').textContent = name;
-    document.getElementById('profileName').value = name;
+    document.getElementById("profileName").value =
+  profileData.username || "Spieler";
     document.getElementById('sideTier').textContent = 'Kostenloses lokales Profil';
     document.getElementById('profileTierText').textContent = 'Kostenloses lokales Profil';
     document.getElementById('profilePremiumBadge').innerHTML = '';
