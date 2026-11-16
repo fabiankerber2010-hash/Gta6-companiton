@@ -929,9 +929,7 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById("profileName").value =
     profileData.username || "Spieler";
 
-  state.profile.name = profileData.username || "Spieler";
-  saveState();
-  renderProfile();
+  
 }
   } catch (error) {
   status.textContent = "Profilfehler: " + error.message;
