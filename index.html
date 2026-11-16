@@ -945,7 +945,18 @@ logoutButton.addEventListener("click", async () => {
     status.textContent = error.message;
   }
 });
+window.gtaSaveProfile = async (username) => {
+  const user = auth.currentUser;
 
+  if (!user) {
+    throw new Error("Bitte zuerst anmelden.");
+  }
+
+  await setDoc(doc(db, "profiles", user.uid), {
+    username: username,
+    updatedAt: new Date().toISOString()
+  }, { merge: true });
+};
 window.gtaFirebase = { auth, db };
 
 console.log("GTA6 COMPANION: Firebase verbunden!");
