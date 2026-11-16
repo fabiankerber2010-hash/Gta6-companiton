@@ -845,14 +845,18 @@
   renderTasks();
 })();
 </script>
-  <script type="module">
+  
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
 import {
   getFirestore,
   doc,
@@ -861,70 +865,46 @@ import {
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCdwTb4kq0Mqi8yXFdjqsE0ZKTrk1Mq1fQ",
+  apiKey: "DEIN_BISHERIGER_API_KEY",
   authDomain: "gta6companion-c11a5.firebaseapp.com",
   projectId: "gta6companion-c11a5",
   storageBucket: "gta6companion-c11a5.firebasestorage.app",
   messagingSenderId: "621484259483",
-  appId: "1:621484259483:web:c0d2861d37975c02ad6e3e",
+  appId: "1:484259483:web:c0d2861d37975c02ad6e3e",
   measurementId: "G-M1JP2YJ3TP"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-onAuthStateChanged(auth, async (user) => {
-  const status = document.getElementById("authStatus");
-  const registerButton = document.getElementById("authRegister");
-  const loginButton = document.getElementById("authLogin");
-  const logoutButton = document.getElementById("authLogout");
 
+const emailField = document.getElementById("authEmail");
+const passwordField = document.getElementById("authPassword");
+const status = document.getElementById("authStatus");
+const registerButton = document.getElementById("authRegister");
+const loginButton = document.getElementById("authLogin");
+const logoutButton = document.getElementById("authLogout");
+
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     status.textContent = "Angemeldet: " + user.email;
     registerButton.hidden = true;
     loginButton.hidden = true;
     logoutButton.hidden = false;
 
-    const profileRef = doc(db, "profiles", user.uid);
-    const profileSnap = await getDoc(profileRef);
+    try {
+      const profileRef = doc(db, "profiles", user.uid);
+      const profileSnap = await getDoc(profileRef);
 
-    if (!profileSnap.exists()) {
-      await setDoc(profileRef, {
-        username: "Spieler",
-        premium: false,
-        createdAt: new Date().toISOString()
-      });
-      document.getElementById("authRegister").addEventListener("click", async () => {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    document.getElementById("authStatus").textContent = "Konto erfolgreich erstellt!";
-  } catch (error) {
-    document.getElementById("authStatus").textContent = error.message;
-  }
-});
-
-document.getElementById("authLogin").addEventListener("click", async () => {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    document.getElementById("authStatus").textContent = "Erfolgreich angemeldet!";
-  } catch (error) {
-    document.getElementById("authStatus").textContent = error.message;
-  }
-});
-
-document.getElementById("authLogout").addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-  } catch (error) {
-    document.getElementById("authStatus").textContent = error.message;
-  }
-});
+      if (!profileSnap.exists()) {
+        await setDoc(profileRef, {
+          username: "Spieler",
+          premium: false,
+          createdAt: new Date().toISOString()
+        });
+      }
+    } catch (error) {
+      status.textContent = "Profilfehler: " + error.message;
     }
   } else {
     status.textContent = "Noch nicht angemeldet.";
@@ -934,14 +914,41 @@ document.getElementById("authLogout").addEventListener("click", async () => {
   }
 });
 
+registerButton.addEventListener("click", async () => {
+  try {
+    await createUserWithEmailAndPassword(
+      auth,
+      emailField.value.trim(),
+      passwordField.value
+    );
+  } catch (error) {
+    status.textContent = error.message;
+  }
+});
+
+loginButton.addEventListener("click", async () => {
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      emailField.value.trim(),
+      passwordField.value
+    );
+  } catch (error) {
+    status.textContent = error.message;
+  }
+});
+
+logoutButton.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    status.textContent = error.message;
+  }
+});
+
 window.gtaFirebase = { auth, db };
-window.gtaAuthFunctions = {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut
-};
 
 console.log("GTA6 COMPANION: Firebase verbunden!");
 </script>
-</body>
-</html>
+
+  
