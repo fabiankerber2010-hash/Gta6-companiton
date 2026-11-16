@@ -789,12 +789,30 @@
     saveState(); renderTasks(); showToast('Erledigte Aufgaben wurden gelöscht.');
   });
 
-  document.getElementById('saveProfile').addEventListener('click', () => {
-    const name = document.getElementById('profileName').value.trim();
-    if (!name) { showToast('Bitte gib einen Benutzernamen ein.'); return; }
+document.getElementById('saveProfile').addEventListener('click', async () => {
+  const name = document.getElementById('profileName').value.trim();
+
+  if (!name) {
+    showToast('Bitte gib einen Benutzernamen ein.');
+    return;
+  }
+
+  try {
     state.profile.name = name;
-    saveState(); renderProfile(); showToast('Profil wurde auf diesem Gerät gespeichert.');
-  });
+    saveState();
+    renderProfile();
+
+    if (window.gtaSaveProfile) {
+      await window.gtaSaveProfile(name);
+      showToast('Profil wurde in der Cloud gespeichert!');
+    } else {
+      showToast('Firebase ist noch nicht verfügbar.');
+    }
+  } catch (error) {
+    showToast('Speichern fehlgeschlagen: ' + error.message);
+  }
+});
+
   document.getElementById('profileAvatarFile').addEventListener('change', event => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
