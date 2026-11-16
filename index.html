@@ -933,9 +933,10 @@ onAuthStateChanged(auth, async (user) => {
   saveState();
   renderProfile();
 }
-    } catch (error) {
-      status.textContent = "Profilfehler: " + error.message;
-    }
+  } catch (error) {
+  status.textContent = "Profilfehler: " + error.message;
+  console.error("Firebase-Profilfehler:", error);
+}
   } else {
     status.textContent = "Noch nicht angemeldet.";
     registerButton.hidden = false;
