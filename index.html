@@ -873,6 +873,35 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+    auth.onAuthStateChanged(async (user) => {
+  const status = document.getElementById("authStatus");
+  const registerButton = document.getElementById("authRegister");
+  const loginButton = document.getElementById("authLogin");
+  const logoutButton = document.getElementById("authLogout");
+
+  if (user) {
+    status.textContent = "Angemeldet: " + user.email;
+    registerButton.hidden = true;
+    loginButton.hidden = true;
+    logoutButton.hidden = false;
+
+    const profileRef = doc(db, "profiles", user.uid);
+    const profileSnap = await getDoc(profileRef);
+
+    if (!profileSnap.exists()) {
+      await setDoc(profileRef, {
+        username: "Spieler",
+        premium: false,
+        createdAt: new Date().toISOString()
+      });
+    }
+  } else {
+    status.textContent = "Noch nicht angemeldet.";
+    registerButton.hidden = false;
+    loginButton.hidden = false;
+    logoutButton.hidden = true;
+  }
+});
 
 window.gtaFirebase = { auth, db };
 window.gtaAuthFunctions = {
