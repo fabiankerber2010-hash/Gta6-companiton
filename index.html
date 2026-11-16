@@ -487,6 +487,40 @@
     <section class="page" id="page-profile">
       <div class="page-heading"><div><div class="eyebrow">Dein Konto</div><h1>Mein <span class="accent">Profil</span></h1></div><span class="pill">Private Übersicht</span></div>
       <div class="card" style="margin-bottom:15px">
+  <h2>Mein Benutzerkonto</h2>
+  <p class="muted small">Melde dich an oder erstelle dein kostenloses Konto.</p>
+
+  <div class="form-grid" style="margin-top:14px">
+    <div class="form-group full">
+      <label for="authEmail">E-Mail-Adresse</label>
+      <input class="field" id="authEmail" type="email"
+        placeholder="Deine E-Mail-Adresse">
+    </div>
+
+    <div class="form-group full">
+      <label for="authPassword">Passwort</label>
+      <input class="field" id="authPassword" type="password"
+        placeholder="Dein Passwort">
+    </div>
+
+    <div class="form-group full">
+      <button class="btn primary" id="authRegister">
+        Konto erstellen
+      </button>
+      <button class="btn" id="authLogin" style="margin-top:8px">
+        Anmelden
+      </button>
+      <button class="btn" id="authLogout" style="margin-top:8px" hidden>
+        Abmelden
+      </button>
+    </div>
+  </div>
+
+  <p class="muted small" id="authStatus">
+    Noch nicht angemeldet.
+  </p>
+</div>
+      <div class="card" style="margin-bottom:15px">
         <div class="profile-head">
           <div><div class="avatar large" id="profileAvatar">S</div><div id="profilePremiumBadge" style="margin-top:8px"></div></div>
           <div><h2 id="profileHeadingName">Spieler</h2><div class="muted small" id="profileTierText" style="margin-top:5px">Kostenloses lokales Profil</div><div class="muted tiny" style="margin-top:8px">Deine Checklisten und Profildaten bleiben zunächst auf diesem Gerät.</div></div>
