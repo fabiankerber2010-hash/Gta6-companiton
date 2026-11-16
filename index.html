@@ -1,260 +1,814 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA6 COMPANION</title>
-<style>
-:root {
-  --bg:#101116;
-  --panel:#191b23;
-  --line:#292c36;
-  --pink:#ed79ad;
-  --blue:#65c9ed;
-  --text:#f4f4f7;
-  --muted:#999daa;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;
-}
-.sidebar{
-  position:fixed;inset:0 auto 0 0;width:230px;
-  background:#15171e;border-right:1px solid var(--line);
-  padding:25px 15px;z-index:5;
-}
-.logo{font-size:19px;font-weight:bold;padding:8px 10px 30px}
-.logo span{color:var(--pink)}
-.navlabel{
-  color:var(--muted);font-size:11px;
-  text-transform:uppercase;letter-spacing:1.5px;
-  padding:12px 10px;
-}
-.nav button{
-  display:block;width:100%;text-align:left;
-  border:0;background:transparent;color:#c8cad2;
-  padding:13px 12px;margin:3px 0;border-radius:8px;
-  font-size:14px;cursor:pointer;
-}
-.nav button.active,.nav button:hover{
-  background:#252733;color:white;
-  border-left:3px solid var(--pink);
-}
-.nav button span{margin-right:10px}
-.main{margin-left:230px;padding:28px 35px;max-width:1400px}
-.top{
-  display:flex;justify-content:space-between;
-  align-items:center;border-bottom:1px solid var(--line);
-  padding-bottom:18px;margin-bottom:30px;
-}
-.top small{color:var(--muted)}
-.menu{display:none}
-.hero{
-  background:linear-gradient(110deg,#25202b,#18242e);
-  border:1px solid #34313e;border-radius:14px;
-  padding:55px 35px;margin-bottom:30px;
-}
-.eyebrow{color:var(--blue);letter-spacing:2px;font-size:12px}
-h1{font-size:clamp(30px,5vw,52px);margin:14px 0}
-h1 span{color:var(--pink)}
-p{color:#b9bbc5;line-height:1.6}
-.section-title{font-size:22px;margin:30px 0 17px}
-.grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:15px;
-}
-.card{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:12px;padding:22px;cursor:pointer;
-  transition:.2s;
-}
-.card:hover{border-color:var(--blue);transform:translateY(-2px)}
-.card h3{margin-top:0}
-.card small{color:var(--pink)}
-input{
-  width:100%;padding:14px;background:var(--panel);
-  border:1px solid var(--line);border-radius:9px;
-  color:white;font-size:15px;margin:12px 0;
-}
-.page{display:none}
-.page.active{display:block}
-button.action{
-  background:var(--pink);color:#17131a;border:0;
-  border-radius:8px;padding:12px 17px;
-  font-weight:bold;cursor:pointer;
-}
-.item{
-  padding:15px;background:var(--panel);
-  border:1px solid var(--line);border-radius:9px;
-  margin:10px 0;
-}
-.item input{width:auto;margin-right:10px}
-.tag{color:var(--blue);font-size:12px}
-footer{color:var(--muted);font-size:12px;margin-top:55px}
-@media(max-width:700px){
-  .sidebar{
-    width:245px;transform:translateX(-100%);
-    transition:.2s;box-shadow:none;
-  }
-  .sidebar.open{transform:translateX(0);box-shadow:10px 0 40px #0008}
-  .main{margin-left:0;padding:18px}
-  .menu{display:block;background:transparent;color:white;
-    border:1px solid var(--line);padding:9px 13px;
-    border-radius:7px;font-size:19px}
-  .hero{padding:38px 22px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101116">
+  <meta name="description" content="GTA6 COMPANION – dein unabhängiger Begleiter für Übersicht, Fortschritt, Missionen, Fahrzeuge und Community zu Grand Theft Auto VI.">
+  <title>GTA6 COMPANION</title>
+  <style>
+    :root {
+      --bg: #101116;
+      --panel: #191b23;
+      --panel-2: #20232d;
+      --panel-3: #272b36;
+      --line: #303440;
+      --pink: #ed79ad;
+      --pink-soft: rgba(237,121,173,.13);
+      --blue: #65c9ed;
+      --blue-soft: rgba(101,201,237,.13);
+      --text: #f4f4f7;
+      --muted: #a0a5b2;
+      --green: #80d6ae;
+      --yellow: #f0c779;
+      --red: #ef8f93;
+      --sidebar-width: 245px;
+      --radius: 17px;
+      --shadow: 0 18px 55px rgba(0,0,0,.24);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 82% -10%, rgba(101,201,237,.09), transparent 34%),
+        radial-gradient(ellipse at 15% 0%, rgba(237,121,173,.08), transparent 30%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .app { min-height: 100vh; }
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; z-index: 30;
+      width: var(--sidebar-width); padding: 22px 15px 18px;
+      background: rgba(20,22,29,.96); border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; overflow-y: auto;
+      backdrop-filter: blur(16px);
+    }
+    .brand { display:flex; align-items:center; gap:11px; padding: 2px 10px 24px; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 13px; display:grid; place-items:center;
+      color:#11131a; font-weight:1000; font-size:18px;
+      background: linear-gradient(135deg,var(--pink),var(--blue));
+      box-shadow: 0 8px 25px rgba(237,121,173,.18);
+    }
+    .brand-title { font-size: 14px; font-weight: 900; letter-spacing: .09em; }
+    .brand-sub { color: var(--muted); font-size: 10px; letter-spacing: .17em; margin-top: 3px; }
+    .nav-label { color:#727887; font-size:10px; font-weight:800; letter-spacing:.15em; padding: 11px 12px 8px; text-transform:uppercase; }
+    .nav { display:grid; gap:5px; }
+    .nav button {
+      width:100%; border:1px solid transparent; border-radius:11px; padding:10px 12px;
+      display:flex; align-items:center; gap:11px; text-align:left; color:#b9bdc8;
+      background:transparent; font-size:13px; font-weight:650; transition:.18s ease;
+    }
+    .nav button:hover { background:var(--panel-2); color:var(--text); }
+    .nav button.active { color:var(--text); background:linear-gradient(90deg,rgba(237,121,173,.14),rgba(101,201,237,.08)); border-color:rgba(237,121,173,.2); }
+    .nav-icon { width:19px; display:inline-grid; place-items:center; font-size:16px; }
+    .sidebar-bottom { margin-top:auto; padding-top:20px; }
+    .mini-profile { display:flex; align-items:center; gap:10px; padding:12px 9px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    .avatar { width:38px; height:38px; border-radius:50%; display:grid; place-items:center; overflow:hidden; flex:none; color:#11131a; font-weight:900; background:linear-gradient(135deg,var(--pink),var(--blue)); }
+    .avatar img { width:100%; height:100%; object-fit:cover; }
+    .mini-name { font-size:12px; font-weight:750; max-width:115px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .mini-tier { color:var(--muted); font-size:10px; margin-top:3px; }
+    .main { margin-left:var(--sidebar-width); min-height:100vh; padding:28px clamp(18px,3vw,42px) 50px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:27px; }
+    .mobile-brand { display:none; align-items:center; gap:9px; font-weight:900; letter-spacing:.08em; font-size:13px; }
+    .mobile-menu { display:none; }
+    .top-actions { display:flex; align-items:center; gap:10px; margin-left:auto; }
+    .global-search { width:min(330px,34vw); position:relative; }
+    .global-search input { width:100%; padding:11px 14px 11px 39px; border:1px solid var(--line); border-radius:12px; color:var(--text); background:var(--panel); outline:none; }
+    .global-search input:focus, .field:focus, textarea:focus, select:focus { border-color:rgba(101,201,237,.65); box-shadow:0 0 0 3px rgba(101,201,237,.08); }
+    .search-symbol { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--muted); }
+    .icon-btn { border:1px solid var(--line); color:var(--text); background:var(--panel); width:42px; height:42px; border-radius:12px; display:grid; place-items:center; }
+    .page { display:none; animation:fadeIn .22s ease; }
+    .page.active { display:block; }
+    @keyframes fadeIn { from {opacity:.4; transform:translateY(4px)} to {opacity:1; transform:none} }
+    .page-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-bottom:23px; }
+    .eyebrow { color:var(--pink); font-size:10px; font-weight:850; letter-spacing:.18em; text-transform:uppercase; margin-bottom:8px; }
+    h1 { margin:0; font-size:clamp(27px,3vw,39px); line-height:1.1; letter-spacing:-.045em; }
+    h1 .accent { background:linear-gradient(90deg,var(--pink),var(--blue)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    h2 { font-size:18px; letter-spacing:-.02em; margin:0; }
+    h3 { font-size:14px; margin:0; }
+    p { color:var(--muted); line-height:1.65; }
+    .muted { color:var(--muted); }
+    .small { font-size:12px; }
+    .tiny { font-size:10px; }
+    .hero {
+      position:relative; overflow:hidden; border:1px solid rgba(237,121,173,.2); border-radius:22px;
+      padding:clamp(22px,4vw,38px); min-height:205px; margin-bottom:22px;
+      background:linear-gradient(115deg,rgba(237,121,173,.13),rgba(101,201,237,.08) 75%),var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .hero:after { content:"VI"; position:absolute; right:3%; top:-30px; font-weight:1000; font-size:clamp(120px,20vw,230px); line-height:1; color:rgba(255,255,255,.025); pointer-events:none; letter-spacing:-.1em; }
+    .hero-content { position:relative; z-index:1; max-width:650px; }
+    .hero h1 { font-size:clamp(32px,4vw,48px); }
+    .hero p { max-width:560px; margin:13px 0 20px; }
+    .button-row { display:flex; flex-wrap:wrap; gap:9px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--line); border-radius:11px; padding:10px 14px; color:var(--text); background:var(--panel-2); font-size:12px; font-weight:750; transition:.18s ease; }
+    .btn:hover { transform:translateY(-1px); border-color:#565d6d; }
+    .btn.primary { border-color:transparent; color:#11131a; background:linear-gradient(100deg,var(--pink),var(--blue)); }
+    .btn.ghost { background:transparent; }
+    .btn.danger { color:var(--red); border-color:rgba(239,143,147,.25); background:rgba(239,143,147,.07); }
+    .btn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+    .grid { display:grid; gap:15px; }
+    .grid.cards { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .grid.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .grid.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .card { min-width:0; border:1px solid var(--line); border-radius:var(--radius); padding:18px; background:linear-gradient(155deg,rgba(255,255,255,.025),transparent 55%),var(--panel); box-shadow:0 7px 24px rgba(0,0,0,.09); }
+    .card.clickable { cursor:pointer; transition:.18s ease; }
+    .card.clickable:hover { transform:translateY(-3px); border-color:rgba(101,201,237,.35); }
+    .card-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+    .card-icon { width:34px; height:34px; border-radius:11px; display:grid; place-items:center; background:var(--blue-soft); color:var(--blue); font-size:16px; }
+    .card-icon.pink { color:var(--pink); background:var(--pink-soft); }
+    .card p { font-size:12px; margin:8px 0 0; }
+    .preview-line { border-top:1px solid var(--line); margin-top:13px; padding-top:11px; color:#c5c8d1; font-size:11px; line-height:1.5; }
+    .preview-tag { display:inline-flex; padding:4px 7px; border-radius:7px; color:var(--blue); background:var(--blue-soft); font-size:9px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+    .progress-number { font-size:29px; letter-spacing:-.05em; font-weight:900; color:var(--blue); }
+    .progress-track { height:8px; width:100%; border-radius:99px; background:#303440; overflow:hidden; }
+    .progress-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--pink),var(--blue)); transition:width .25s ease; }
+    .section-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:26px 0 13px; }
+    .section-row .link-btn { border:0; background:transparent; color:var(--blue); font-size:11px; font-weight:800; }
+    .notice { display:flex; gap:11px; padding:13px 14px; border:1px solid rgba(240,199,121,.22); border-radius:13px; background:rgba(240,199,121,.06); color:#e6d4ad; font-size:12px; line-height:1.55; }
+    .notice.info { color:#b5dceb; border-color:rgba(101,201,237,.2); background:rgba(101,201,237,.06); }
+    .notice.success { color:#b8e6cd; border-color:rgba(128,214,174,.2); background:rgba(128,214,174,.06); }
+    .notice + .notice { margin-top:10px; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin:17px 0; }
+    .field, select, textarea { width:100%; color:var(--text); background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:11px 12px; outline:none; }
+    select { cursor:pointer; }
+    select option { background:var(--panel); }
+    textarea { min-height:110px; resize:vertical; line-height:1.55; }
+    .toolbar .field { flex:1 1 220px; }
+    .toolbar select { width:auto; min-width:150px; }
+    .empty-state { text-align:center; border:1px dashed #3a3f4c; border-radius:15px; padding:28px 18px; color:var(--muted); background:rgba(255,255,255,.012); }
+    .empty-state .big-icon { font-size:27px; margin-bottom:8px; }
+    .empty-state h3 { color:var(--text); margin-bottom:6px; }
+    .data-card { display:flex; align-items:flex-start; gap:13px; }
+    .data-card .card-icon { flex:none; }
+    .data-card p { margin:6px 0 0; }
+    .list { display:grid; gap:10px; }
+    .list-row { display:flex; align-items:center; gap:12px; padding:13px; border:1px solid var(--line); border-radius:13px; background:var(--panel); }
+    .list-row .grow { flex:1; min-width:0; }
+    .list-row strong { display:block; font-size:12px; }
+    .list-row small { display:block; color:var(--muted); margin-top:4px; font-size:10px; }
+    .pill { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); padding:5px 8px; border-radius:999px; color:#c2c6d0; font-size:10px; font-weight:750; }
+    .pill.pink { color:var(--pink); border-color:rgba(237,121,173,.25); background:var(--pink-soft); }
+    .pill.blue { color:var(--blue); border-color:rgba(101,201,237,.25); background:var(--blue-soft); }
+    .pill.green { color:var(--green); border-color:rgba(128,214,174,.25); background:rgba(128,214,174,.08); }
+    .pill.gold { color:#f2d08a; border-color:rgba(240,199,121,.25); background:rgba(240,199,121,.08); }
+    .stat-label { display:flex; justify-content:space-between; color:#c8cbd4; font-size:11px; margin-bottom:7px; }
+    .vehicle-stats { display:grid; gap:12px; margin-top:16px; }
+    .vehicle-bar { height:7px; border-radius:99px; background:#303440; overflow:hidden; }
+    .vehicle-bar span { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--pink),var(--blue)); }
+    .profile-head { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+    .avatar.large { width:84px; height:84px; font-size:25px; }
+    .premium-badge { display:inline-flex; align-items:center; gap:5px; border-radius:99px; padding:5px 9px; color:#f3d38e; background:rgba(240,199,121,.1); border:1px solid rgba(240,199,121,.28); font-size:10px; font-weight:900; letter-spacing:.06em; }
+    .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+    .form-group { display:grid; gap:7px; }
+    .form-group label { color:#c7cad3; font-size:11px; font-weight:750; }
+    .form-group.full { grid-column:1/-1; }
+    .check-row { display:flex; align-items:center; gap:10px; }
+    .check-row input { accent-color:var(--pink); width:16px; height:16px; }
+    .task-list { display:grid; gap:8px; }
+    .task { display:flex; align-items:center; gap:11px; border:1px solid var(--line); border-radius:11px; padding:11px 12px; background:var(--panel); }
+    .task input { width:17px; height:17px; accent-color:var(--blue); flex:none; }
+    .task.done .task-name { text-decoration:line-through; color:#777e8c; }
+    .task-name { flex:1; min-width:0; font-size:12px; overflow-wrap:anywhere; }
+    .task-cat { color:var(--muted); font-size:9px; }
+    .task-remove { border:0; color:#818795; background:transparent; font-size:16px; padding:2px 5px; }
+    .task-remove:hover { color:var(--red); }
+    .community-post { border:1px solid var(--line); border-radius:15px; background:var(--panel); padding:16px; }
+    .post-header { display:flex; align-items:center; gap:10px; }
+    .post-title { font-size:14px; font-weight:850; margin:13px 0 7px; }
+    .post-body { color:#c1c5cf; font-size:12px; line-height:1.65; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .post-actions { display:flex; gap:9px; flex-wrap:wrap; padding-top:13px; margin-top:13px; border-top:1px solid var(--line); }
+    .vote-btn { border:1px solid var(--line); border-radius:9px; background:var(--panel-2); color:#cbd0da; padding:7px 10px; font-size:11px; }
+    .vote-btn.selected.up { color:var(--green); border-color:rgba(128,214,174,.3); }
+    .vote-btn.selected.down { color:var(--red); border-color:rgba(239,143,147,.3); }
+    .message-layout { display:grid; grid-template-columns:260px minmax(0,1fr); min-height:390px; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    .message-list { border-right:1px solid var(--line); padding:13px; }
+    .message-view { padding:18px; display:flex; flex-direction:column; min-width:0; }
+    .message-placeholder { margin:auto; text-align:center; max-width:330px; }
+    .message-bubble { max-width:78%; width:fit-content; border-radius:13px; padding:10px 12px; margin:7px 0; background:var(--panel-3); color:#d5d8e0; font-size:12px; line-height:1.5; }
+    .message-bubble.mine { margin-left:auto; color:#11131a; background:linear-gradient(110deg,var(--pink),var(--blue)); }
+    .footer { color:#747b89; font-size:10px; line-height:1.6; margin-top:36px; padding-top:17px; border-top:1px solid var(--line); }
+    .footer a { color:var(--blue); }
+    .toast { position:fixed; z-index:80; bottom:22px; left:50%; transform:translate(-50%,20px); opacity:0; pointer-events:none; padding:11px 15px; max-width:calc(100vw - 30px); border:1px solid var(--line); border-radius:11px; background:#252936; color:var(--text); box-shadow:var(--shadow); font-size:12px; transition:.2s; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    .overlay { display:none; position:fixed; inset:0; z-index:25; background:rgba(0,0,0,.55); }
+    .overlay.show { display:block; }
+    .hidden { display:none !important; }
+    @media (max-width:1100px) {
+      .grid.cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .grid.four { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width:760px) {
+      :root { --sidebar-width:265px; }
+      .sidebar { transform:translateX(-102%); transition:transform .22s ease; box-shadow:var(--shadow); }
+      .sidebar.open { transform:translateX(0); }
+      .main { margin-left:0; padding:16px 15px 35px; }
+      .topbar { margin-bottom:21px; }
+      .mobile-menu { display:grid; }
+      .mobile-brand { display:flex; }
+      .global-search { width:min(190px,42vw); }
+      .global-search input { padding:10px 10px 10px 34px; font-size:12px; }
+      .global-search .search-symbol { left:11px; }
+      .top-actions { gap:7px; }
+      .page-heading { align-items:flex-start; flex-direction:column; }
+      .grid.cards, .grid.two { grid-template-columns:1fr; }
+      .grid.four { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .message-layout { grid-template-columns:1fr; }
+      .message-list { border-right:0; border-bottom:1px solid var(--line); }
+      .form-grid { grid-template-columns:1fr; }
+      .form-group.full { grid-column:auto; }
+      .hero { min-height:0; }
+    }
+    @media (max-width:420px) {
+      .mobile-brand span { display:none; }
+      .global-search { width:44vw; }
+      .grid.four { grid-template-columns:1fr 1fr; }
+      .card { padding:15px; }
+    }
+  </style>
 </head>
 <body>
-
-<aside class="sidebar" id="sidebar">
-  <div class="logo">GTA6 <span>COMPANION</span></div>
-  <div class="navlabel">Hauptmenü</div>
-  <nav class="nav">
-    <button class="active" onclick="showPage('home',this)">⌂ Startseite</button>
-    <button onclick="showPage('map',this)">⌖ Karte</button>
-    <button onclick="showPage('missions',this)">▤ Missionen</button>
-    <button onclick="showPage('characters',this)">♙ Charaktere</button>
-    <button onclick="showPage('vehicles',this)">◇ Fahrzeuge</button>
-    <button onclick="showPage('secrets',this)">✧ Geheimnisse</button>
-    <button onclick="showPage('news',this)">◷ News</button>
-    <div class="navlabel">Persönlich</div>
-    <button onclick="showPage('checklist',this)">☑ Checkliste</button>
-    <button onclick="showPage('premium',this)">☆ Premium</button>
-  </nav>
-</aside>
-
-<main class="main">
-  <div class="top">
-    <div>
-      <strong>GTA6 COMPANION</strong><br>
-      <small>Dein Begleiter durch Leonida</small>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">VI</div>
+      <div><div class="brand-title">GTA6 COMPANION</div><div class="brand-sub">YOUR LEONIDA GUIDE</div></div>
     </div>
-    <button class="menu" onclick="toggleMenu()">☰</button>
-  </div>
-
-  <section id="home" class="page active">
-    <div class="hero">
-      <div class="eyebrow">WELCOME TO LEONIDA</div>
-      <h1>GTA6 <span>COMPANION</span></h1>
-      <p>Deine unabhängige Plattform für Informationen, Guides und Entdeckungen rund um Grand Theft Auto VI.</p>
-      <button class="action" onclick="showPage('missions')">Guides entdecken →</button>
+    <div class="nav-label">Übersicht</div>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <button class="active" data-page="home"><span class="nav-icon">⌂</span>Startseite</button>
+      <button data-page="map"><span class="nav-icon">⌖</span>Karte</button>
+      <button data-page="missions"><span class="nav-icon">◎</span>Missionen</button>
+      <button data-page="characters"><span class="nav-icon">♙</span>Charaktere</button>
+      <button data-page="vehicles"><span class="nav-icon">▰</span>Fahrzeuge</button>
+      <button data-page="secrets"><span class="nav-icon">✧</span>Geheimnisse</button>
+      <button data-page="news"><span class="nav-icon">▤</span>News</button>
+      <button data-page="checklist"><span class="nav-icon">☑</span>Checkliste</button>
+    </nav>
+    <div class="nav-label">Community</div>
+    <nav class="nav">
+      <button data-page="community"><span class="nav-icon">◉</span>Community</button>
+      <button data-page="messages"><span class="nav-icon">✉</span>Nachrichten</button>
+    </nav>
+    <div class="nav-label">Konto</div>
+    <nav class="nav">
+      <button data-page="profile"><span class="nav-icon">♙</span>Mein Profil</button>
+      <button data-page="premium"><span class="nav-icon">✦</span>Premium</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="mini-profile">
+        <div class="avatar" id="sideAvatar">S</div>
+        <div style="min-width:0"><div class="mini-name" id="sideName">Spieler</div><div class="mini-tier" id="sideTier">Kostenloses Profil</div></div>
+      </div>
     </div>
-    <h2 class="section-title">Entdecken</h2>
-    <input id="search" placeholder="Bereiche durchsuchen..." oninput="filterCards()">
-    <div class="grid" id="homecards">
-      <div class="card" onclick="showPage('map')"><small>EXPLORE</small><h3>Die Karte</h3><p>Entdecke die Welt von Leonida.</p></div>
-      <div class="card" onclick="showPage('missions')"><small>GUIDES</small><h3>Missionen</h3><p>Übersichten und Lösungen.</p></div>
-      <div class="card" onclick="showPage('vehicles')"><small>DATABASE</small><h3>Fahrzeuge</h3><p>Die Fahrzeugdatenbank.</p></div>
-      <div class="card" onclick="showPage('secrets')"><small>DISCOVER</small><h3>Geheimnisse</h3><p>Besondere Orte und Entdeckungen.</p></div>
-    </div>
-  </section>
+  </aside>
+  <div class="overlay" id="overlay"></div>
 
-  <section id="map" class="page">
-    <h1>Die <span style="color:var(--blue)">Karte</span></h1>
-    <div class="card"><h3>Leonida entdecken</h3><p>Die interaktive Karte wird noch entwickelt. Bestätigte Orte werden nach und nach ergänzt.</p></div>
-  </section>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Menü öffnen">☰</button>
+      <div class="mobile-brand"><div class="brand-mark" style="width:31px;height:31px;border-radius:9px;font-size:13px">VI</div><span>GTA6 COMPANION</span></div>
+      <div class="top-actions">
+        <div class="global-search"><span class="search-symbol">⌕</span><input id="globalSearch" type="search" placeholder="Website durchsuchen…" aria-label="Website durchsuchen"></div>
+        <button class="icon-btn" id="profileQuick" aria-label="Profil öffnen">♙</button>
+      </div>
+    </header>
 
-  <section id="missions" class="page">
-    <h1>Missionen</h1>
-    <p>Missionen und Lösungen an einem Ort.</p>
-    <div class="card"><h3>Missionsdatenbank</h3><p>Die vollständigen Missionsinformationen werden ergänzt, sobald sie verlässlich verfügbar sind.</p></div>
-  </section>
+    <!-- STARTSEITE -->
+    <section class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-content">
+          <div class="eyebrow">Dein persönlicher Begleiter</div>
+          <h1>Willkommen bei <span class="accent">GTA6 COMPANION</span></h1>
+          <p>Behalte deine Übersicht, sammle bestätigte Informationen und organisiere deinen persönlichen Fortschritt rund um Grand Theft Auto VI.</p>
+          <div class="button-row"><button class="btn primary" data-go="map">Karte öffnen <span>↗</span></button><button class="btn ghost" data-go="checklist">Fortschritt ansehen</button></div>
+        </div>
+      </div>
 
-  <section id="characters" class="page">
-    <h1>Charaktere</h1>
-    <div class="grid">
-      <div class="card"><h3>Lucia Caminos</h3><p>Charakterprofil – weitere bestätigte Informationen folgen.</p></div>
-      <div class="card"><h3>Jason Duval</h3><p>Charakterprofil – weitere bestätigte Informationen folgen.</p></div>
-    </div>
-  </section>
+      <div class="grid cards">
+        <article class="card clickable" data-go="news">
+          <div class="card-top"><div class="card-icon">▤</div><span class="preview-tag">News</span></div>
+          <h3>Neueste Nachrichten</h3>
+          <p id="homeNewsPreview">Hier erscheinen neue Nachrichten mit Datum und Quelle, sobald geprüfte Einträge verfügbar sind.</p>
+          <div class="preview-line" id="homeNewsMeta">Noch keine News hinterlegt</div>
+        </article>
+        <article class="card clickable" data-go="checklist">
+          <div class="card-top"><div class="card-icon">◌</div><span class="preview-tag">Dein Fortschritt</span></div>
+          <div class="progress-number" id="homeProgress">0 %</div>
+          <div class="progress-track"><div class="progress-fill" id="homeProgressBar" style="width:0%"></div></div>
+          <div class="preview-line" id="homeProgressMeta">0 von 0 eigenen Aufgaben erledigt</div>
+        </article>
+        <article class="card clickable" data-go="secrets">
+          <div class="card-top"><div class="card-icon pink">✧</div><span class="preview-tag">Entdeckungen</span></div>
+          <h3>Geheimnisse</h3>
+          <p>Finde Easter Eggs, Rätsel und versteckte Orte – bestätigte Informationen werden hier gesammelt.</p>
+          <div class="preview-line">Deine persönlichen Funde verwaltest du in der Checkliste.</div>
+        </article>
+        <article class="card clickable" data-go="missions">
+          <div class="card-top"><div class="card-icon">◎</div><span class="preview-tag">Missionen</span></div>
+          <h3>Missionsübersicht</h3>
+          <p>Story-Missionen, Nebenmissionen und Lösungen – ohne unbestätigte Details als Fakten darzustellen.</p>
+          <div class="preview-line">Premium: persönlicher KI-Missionsassistent (später)</div>
+        </article>
+        <article class="card clickable" data-go="vehicles">
+          <div class="card-top"><div class="card-icon pink">▰</div><span class="preview-tag">Fahrzeuge</span></div>
+          <h3>Fahrzeugdatenbank</h3>
+          <p>Fahrzeugtypen, Hersteller und Leistungsbalken im Stil der GTA-Fahrzeuganzeige.</p>
+          <div class="preview-line">Geschwindigkeit · Beschleunigung · Bremsen · Traktion</div>
+        </article>
+        <article class="card clickable" data-go="characters">
+          <div class="card-top"><div class="card-icon">♙</div><span class="preview-tag">Personen</span></div>
+          <h3>Charaktere</h3>
+          <p>Profile mit Hintergrund, Eigenschaften und verlässlich bekannten Informationen.</p>
+          <div class="preview-line">Neue Profile werden ergänzt, sobald Informationen geprüft sind.</div>
+        </article>
+        <article class="card clickable" data-go="community">
+          <div class="card-top"><div class="card-icon pink">◉</div><span class="preview-tag">Community</span></div>
+          <h3>Austausch mit anderen</h3>
+          <p>Beiträge lesen, hilfreiche Inhalte bewerten und Geheimnisse entdecken.</p>
+          <div class="preview-line">Beiträge erstellen und kommentieren: nur Premium · keine Kommentare im Feed</div>
+        </article>
+        <article class="card clickable" data-go="messages">
+          <div class="card-top"><div class="card-icon">✉</div><span class="preview-tag">Postfach</span></div>
+          <h3>Private Nachrichten</h3>
+          <p>Private Unterhaltungen mit anderen Mitgliedern – mit Blockier- und Meldefunktionen.</p>
+          <div class="preview-line">Premium kann Unterhaltungen starten; kostenlose Nutzer können antworten.</div>
+        </article>
+        <article class="card clickable" data-go="premium">
+          <div class="card-top"><div class="card-icon pink">✦</div><span class="preview-tag">Mitgliedschaft</span></div>
+          <h3>Premium entdecken</h3>
+          <p>Erweiterte Kartenfunktionen, persönliche Organisation und besondere Community-Funktionen.</p>
+          <div class="preview-line">Mitgliedschaften und Zahlungen sind noch nicht aktiviert.</div>
+        </article>
+      </div>
+      <div class="footer">GTA6 COMPANION ist ein unabhängiges Fanprojekt und steht in keiner Verbindung zu Rockstar Games. Alle GTA-VI-Inhalte werden erst nach Prüfung ergänzt. Grand Theft Auto und zugehörige Marken gehören ihren jeweiligen Rechteinhabern.</div>
+    </section>
+        <!-- KARTE -->
+    <section class="page" id="page-map">
+      <div class="page-heading"><div><div class="eyebrow">Leonida entdecken</div><h1>Die <span class="accent">Karte</span></h1></div><span class="pill blue">Kartenbereich</span></div>
+      <div class="notice info">⌖ Die Kartenseite bleibt als eigener Bereich erhalten. Eine echte interaktive Karte mit Zoom, Markierungen und bestätigten Fundorten benötigt noch eine Kartenquelle und geprüfte Ortsdaten. Es werden hier keine Orte erfunden.</div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-top"><h2>Leonida entdecken</h2><span class="pill">Karte wird erweitert</span></div>
+        <p>Hier ist der Platz für die interaktive Karte. Sobald eine verlässliche Kartengrundlage und überprüfte Orte eingebunden sind, können Marker nach Kategorien und Regionen gefiltert werden.</p>
+        <div class="grid four" style="margin-top:18px">
+          <div class="card"><div class="card-icon">⌖</div><h3 style="margin-top:10px">Orte</h3><p>Bestätigte Orte und Sehenswürdigkeiten.</p></div>
+          <div class="card"><div class="card-icon pink">✧</div><h3 style="margin-top:10px">Geheimnisse</h3><p>Geprüfte Entdeckungen und Easter Eggs.</p></div>
+          <div class="card"><div class="card-icon">▰</div><h3 style="margin-top:10px">Fahrzeuge</h3><p>Bekannte Fahrzeugfundorte, falls bestätigt.</p></div>
+          <div class="card"><div class="card-icon pink">◎</div><h3 style="margin-top:10px">Missionen</h3><p>Relevante Missionsorte, falls bekannt.</p></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:15px"><h3>Geplante Filter</h3><div class="toolbar"><select disabled><option>Kategorie</option></select><select disabled><option>Region</option></select><select disabled><option>Entdeckt / Nicht entdeckt</option></select><button class="btn" disabled>Filter zurücksetzen</button></div><p class="small">Filter und persönliche Kartenmarkierungen werden aktiviert, sobald die eigentliche Karte verbunden ist. Erweiterte Filter und persönliche Markierungen sind als Premium-Funktionen vorgesehen.</p></div>
+    </section>
 
-  <section id="vehicles" class="page">
-    <h1>Fahrzeuge</h1>
-    <div class="card"><h3>Fahrzeugdatenbank</h3><p>Eine Übersicht bestätigter Fahrzeuge ist in Planung.</p></div>
-  </section>
+    <!-- MISSIONEN -->
+    <section class="page" id="page-missions">
+      <div class="page-heading"><div><div class="eyebrow">Story und Nebenaufgaben</div><h1><span class="accent">Missionen</span></h1></div><span class="pill blue">Datenbank</span></div>
+      <div class="notice info">Missionsnamen, Abläufe und Belohnungen werden erst eingetragen, wenn sie verlässlich bestätigt sind. So vermeiden wir erfundene Lösungen und Spoiler.</div>
+      <div class="toolbar"><input class="field" id="missionSearch" placeholder="Mission suchen…"><select id="missionCategory"><option value="all">Alle Kategorien</option><option>Story</option><option>Nebenmissionen</option><option>Sonstige</option></select></div>
+      <div class="grid two">
+        <div class="card"><div class="card-top"><h3>Missionslösungen</h3><span class="pill">Geplant</span></div><p>Jede Mission erhält eine eigene Seite mit Beschreibung, Schritt-für-Schritt-Lösung, möglichen Belohnungen und einem Fortschrittsstatus.</p><div class="preview-line">Spoiler-Schutz: Lösungen sollen erst nach dem Öffnen einer Mission sichtbar werden.</div></div>
+        <div class="card"><div class="card-top"><h3>Dein Missionsfortschritt</h3><span class="pill blue">Privat</span></div><p>Du kannst eigene Missionsaufgaben in deiner Checkliste anlegen und als erledigt markieren. Sie werden nur in diesem Browser gespeichert.</p><button class="btn" data-go="checklist">Zur Checkliste</button></div>
+      </div>
+      <div class="section-row"><h2>Verfügbare Missionen</h2><span class="muted tiny">Wird mit bestätigten Daten gefüllt</span></div>
+      <div class="empty-state"><div class="big-icon">◎</div><h3>Noch keine bestätigten Missionseinträge</h3><p>Hier erscheinen geprüfte Missionen und ihre Lösungen, sobald verlässliche Informationen verfügbar sind.</p></div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-top"><h2>KI-Missionsassistent</h2><span class="premium-badge">✦ PREMIUM</span></div>
+        <p>Beschreibe, an welcher Stelle du nicht weiterkommst. Der Assistent soll gezielte Hinweise geben oder auf Wunsch eine ausführlichere Lösung erklären.</p>
+        <div class="notice">Die KI-Funktion ist noch nicht verbunden. Dafür werden später ein sicheres Backend, eine KI-Schnittstelle und geprüfte Missionsinformationen benötigt. Ein KI-Schlüssel darf nicht im öffentlichen HTML-Code stehen.</div>
+        <div class="form-group" style="margin-top:13px"><label for="missionProblem">Dein Problem (Vorschau)</label><textarea id="missionProblem" placeholder="Beschreibe, bei welcher Mission du nicht weiterkommst…" disabled></textarea></div>
+        <button class="btn primary" style="margin-top:10px" disabled>KI um Hilfe bitten · später verfügbar</button>
+      </div>
+    </section>
 
-  <section id="secrets" class="page">
-    <h1>Geheimnisse</h1>
-    <div class="card"><h3>Entdeckungen</h3><p>Hier sammeln wir verifizierte Geheimnisse und versteckte Orte.</p></div>
-  </section>
+    <!-- CHARAKTERE -->
+    <section class="page" id="page-characters">
+      <div class="page-heading"><div><div class="eyebrow">Personen in Leonida</div><h1><span class="accent">Charaktere</span></h1></div></div>
+      <div class="toolbar"><input class="field" id="characterSearch" placeholder="Charakter suchen…"><select id="characterFilter"><option value="all">Alle Charaktere</option><option value="confirmed">Bestätigte Informationen</option><option value="rumor">Unbestätigte Informationen</option></select></div>
+      <div class="empty-state"><div class="big-icon">♙</div><h3>Charakterprofile werden ergänzt</h3><p>Jedes Profil soll ein Bild, den Namen, eine Beschreibung, Hintergrundinformationen und bekannte Eigenschaften enthalten. Nur geprüfte Angaben werden als Fakten angezeigt; Gerüchte werden klar gekennzeichnet.</p></div>
+    </section>
 
-  <section id="news" class="page">
-    <h1>News</h1>
-    <div class="card"><h3>Neuigkeiten</h3><p>Aktuelle und überprüfte GTA-6-Informationen werden hier veröffentlicht.</p></div>
-  </section>
+    <!-- FAHRZEUGE -->
+    <section class="page" id="page-vehicles">
+      <div class="page-heading"><div><div class="eyebrow">Fahrzeugdatenbank</div><h1><span class="accent">Fahrzeuge</span></h1></div></div>
+      <div class="toolbar"><input class="field" id="vehicleSearch" placeholder="Fahrzeug suchen…"><select id="vehicleCategory"><option value="all">Alle Fahrzeugtypen</option><option>Autos</option><option>Motorräder</option><option>Boote</option><option>Flugzeuge</option><option>Sonstige</option></select><select id="vehicleManufacturer"><option value="all">Alle Hersteller</option></select></div>
+      <div class="card" style="margin-bottom:15px"><div class="card-top"><h2>Leistungsanzeige</h2><span class="pill blue">GTA-Stil</span></div><p>Wir übernehmen horizontale Leistungsbalken statt Zahlenbewertungen – ähnlich der Fahrzeuganzeige aus GTA 5.</p><div class="vehicle-stats">
+        <div><div class="stat-label"><span>Geschwindigkeit</span><span class="muted">Noch keine Daten</span></div><div class="vehicle-bar"><span></span></div></div>
+        <div><div class="stat-label"><span>Beschleunigung</span><span class="muted">Noch keine Daten</span></div><div class="vehicle-bar"><span></span></div></div>
+        <div><div class="stat-label"><span>Bremsen</span><span class="muted">Noch keine Daten</span></div><div class="vehicle-bar"><span></span></div></div>
+        <div><div class="stat-label"><span>Traktion / Handling</span><span class="muted">Noch keine Daten</span></div><div class="vehicle-bar"><span></span></div></div>
+      </div><p class="tiny">Die Balken werden erst mit verlässlichen GTA-VI-Fahrzeugwerten gefüllt. Es werden keine Beispielwerte als echte Daten ausgegeben.</p></div>
+      <div class="empty-state"><div class="big-icon">▰</div><h3>Noch keine bestätigten Fahrzeugdaten</h3><p>Die Datenbank wird um Kategorien, Hersteller, Fahrzeugdetails und – soweit bekannt – Fundorte ergänzt.</p></div>
+    </section>
 
-  <section id="checklist" class="page">
-    <h1>Meine Checkliste</h1>
-    <p>Deine Einträge bleiben auf diesem Gerät gespeichert.</p>
-    <input id="newtask" placeholder="Neuen Eintrag hinzufügen...">
-    <button class="action" onclick="addTask()">Hinzufügen</button>
-    <div id="tasks"></div>
-  </section>
+    <!-- GEHEIMNISSE -->
+    <section class="page" id="page-secrets">
+      <div class="page-heading"><div><div class="eyebrow">Easter Eggs und Entdeckungen</div><h1><span class="accent">Geheimnisse</span></h1></div></div>
+      <div class="toolbar"><input class="field" id="secretSearch" placeholder="Geheimnis suchen…"><select id="secretCategory"><option value="all">Alle Kategorien</option><option>Easter Eggs</option><option>Versteckte Orte</option><option>Rätsel</option><option>Seltene Gegenstände</option><option>Zufallsereignisse</option></select><select id="secretRegion"><option value="all">Alle Regionen</option></select></div>
+      <div class="grid two">
+        <div class="card"><div class="card-icon pink">✧</div><h3 style="margin-top:12px">Entdeckungen</h3><p>Bestätigte Easter Eggs, Rätsel, seltene Gegenstände und ungewöhnliche Ereignisse.</p></div>
+        <div class="card"><div class="card-icon">⌖</div><h3 style="margin-top:12px">Fundorte</h3><p>Beschreibungen und Kartenmarkierungen, sobald die Orte verlässlich bekannt sind.</p></div>
+      </div>
+      <div class="notice info" style="margin-top:15px">Gerüchte werden getrennt von bestätigten Geheimnissen angezeigt. Persönliche Funde kannst du bereits in deiner privaten Checkliste notieren.</div>
+      <div class="empty-state" style="margin-top:15px"><div class="big-icon">✧</div><h3>Noch keine bestätigten Geheimnisse</h3><p>Neue Funde werden ergänzt, sobald ihre Echtheit überprüft werden kann.</p></div>
+    </section>
+        <!-- NEWS -->
+    <section class="page" id="page-news">
+      <div class="page-heading"><div><div class="eyebrow">Aktuelles und bestätigte Informationen</div><h1>GTA6 <span class="accent">News</span></h1></div></div>
+      <div class="toolbar"><input class="field" id="newsSearch" placeholder="News suchen…"><select id="newsStatus"><option value="all">Alle Meldungen</option><option>Bestätigt</option><option>Unbestätigt</option><option>Gerücht</option></select><select id="newsSource"><option value="all">Alle Quellen</option><option>Rockstar Games</option><option>Medien</option></select></div>
+      <div class="notice info">Der News-Bereich ist für aktuelle Meldungen vorbereitet. Jede Meldung soll Veröffentlichungsdatum, Quelle und einen Status enthalten. Offizielle Rockstar-Quellen haben Vorrang; Gerüchte werden nicht als Fakten dargestellt.</div>
+      <div class="empty-state" style="margin-top:15px"><div class="big-icon">▤</div><h3>Noch keine geprüften News eingetragen</h3><p>Hier erscheinen neue Meldungen, sobald sie mit einer verlässlichen Quelle und einem Datum geprüft wurden.</p></div>
+    </section>
 
-  <section id="premium" class="page">
-    <h1>Premium <span style="color:var(--pink)">Mitgliedschaft</span></h1>
-    <div class="card">
-      <h3>GTA6 COMPANION Premium</h3>
-      <p>Werbefreiheit, erweiterte Kartenfunktionen, persönliche Sammlungen und Cloud-Synchronisierung sind geplant.</p>
-      <p class="tag">PREVIEW – Noch keine echte Mitgliedschaft oder Zahlung</p>
-    </div>
-  </section>
+    <!-- CHECKLISTE -->
+    <section class="page" id="page-checklist">
+      <div class="page-heading"><div><div class="eyebrow">Deine private Übersicht</div><h1><span class="accent">Checkliste</span></h1></div><span class="pill blue">Lokal gespeichert</span></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-top"><div><div class="muted tiny">DEIN PERSÖNLICHER FORTSCHRITT</div><div class="progress-number" id="checkProgress">0 %</div></div><div style="font-size:34px;color:var(--blue)">◌</div></div>
+        <div class="progress-track" style="height:12px"><div class="progress-fill" id="checkProgressBar" style="width:0%"></div></div>
+        <div class="stat-label" style="margin-top:10px"><span id="checkProgressText">0 von 0 Aufgaben erledigt</span><span id="checkRemaining">Noch keine Aufgaben</span></div>
+        <p class="tiny">Dies ist dein persönlicher Fortschritt innerhalb dieser Website, nicht automatisch der offizielle Ingame-Prozentstand von GTA VI.</p>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h2>Eigene Aufgabe hinzufügen</h2>
+        <div class="form-grid" style="margin-top:13px">
+          <div class="form-group"><label for="taskInput">Aufgabe</label><input class="field" id="taskInput" maxlength="100" placeholder="z. B. Geheimnis überprüfen"></div>
+          <div class="form-group"><label for="taskCategory">Kategorie</label><select id="taskCategory"><option>Story-Missionen</option><option>Nebenmissionen</option><option>Sammelobjekte</option><option>Geheimnisse & Easter Eggs</option><option>Fahrzeuge</option><option>Aktivitäten</option><option>Sonstiges</option></select></div>
+          <div class="form-group full"><button class="btn primary" id="addTaskBtn">＋ Aufgabe hinzufügen</button></div>
+        </div>
+      </div>
+      <div class="toolbar"><input class="field" id="taskSearch" placeholder="Deine Aufgaben durchsuchen…"><select id="taskFilter"><option value="all">Alle Aufgaben</option><option value="open">Offen</option><option value="done">Erledigt</option></select><button class="btn ghost" id="clearDoneBtn">Erledigte löschen</button></div>
+      <div class="task-list" id="taskList"></div>
+      <div class="empty-state" id="taskEmpty"><div class="big-icon">☑</div><h3>Deine Checkliste ist noch leer</h3><p>Füge eigene Aufgaben hinzu. Abgehakte Aufgaben werden automatisch gespeichert.</p></div>
+    </section>
 
-  <footer>
-    GTA6 COMPANION · Unabhängiges Fanprojekt · Nicht mit Rockstar Games verbunden.
-  </footer>
-</main>
+    <!-- COMMUNITY -->
+    <section class="page" id="page-community">
+      <div class="page-heading"><div><div class="eyebrow">Austausch und Entdeckungen</div><h1><span class="accent">Community</span></h1></div><span class="premium-badge">✦ POSTEN: PREMIUM</span></div>
+      <div class="notice info">Alle können Beiträge ansehen und mit 👍 „hilfreich“ oder 👎 „nicht hilfreich“ bewerten. Beiträge erstellen und kommentieren ist Premium vorbehalten. Öffentliche Kommentare gibt es bewusst nicht.</div>
+      <div class="grid two" style="margin:15px 0">
+        <div class="card"><h3>Geheimnisse</h3><p>Entdeckungen und versteckte Inhalte teilen.</p></div>
+        <div class="card"><h3>Diskussionen</h3><p>Meinungen und Informationen austauschen.</p></div>
+        <div class="card"><h3>Fragen</h3><p>Fragen stellen und Antworten finden.</p></div>
+        <div class="card"><h3>Fundorte</h3><p>Interessante Orte beschreiben.</p></div>
+      </div>
+      <div class="card" style="margin-bottom:15px">
+        <div class="card-top"><h2>Beitrag verfassen</h2><span class="premium-badge">✦ PREMIUM</span></div>
+        <div class="form-grid">
+          <div class="form-group"><label for="postCategory">Kategorie</label><select id="postCategory"><option>Geheimnisse</option><option>Diskussionen</option><option>Fragen</option><option>Fundorte</option></select></div>
+          <div class="form-group"><label for="postTitle">Titel</label><input id="postTitle" class="field" maxlength="90" placeholder="Titel deines Beitrags" disabled></div>
+          <div class="form-group full"><label for="postBody">Text</label><textarea id="postBody" maxlength="3000" placeholder="Schreibe deinen Beitrag…" disabled></textarea></div>
+          <div class="form-group full"><button class="btn primary" id="postSubmit" disabled>Beitrag veröffentlichen · später verfügbar</button></div>
+        </div>
+        <p class="tiny">Die Veröffentlichung benötigt ein echtes Nutzerkonto, Premium-Prüfung und KI-Inhaltsprüfung auf einem Server. Die KI soll problematische Inhalte erkennen; unklare Fälle werden dem Administrator zur Freigabe vorgelegt.</p>
+      </div>
+      <div class="section-row"><h2>Community-Beiträge</h2><span class="muted tiny">Gemeinsamer Feed nach Backend-Anbindung</span></div>
+      <div class="empty-state"><div class="big-icon">◉</div><h3>Community-Feed noch nicht verbunden</h3><p>Beiträge, Likes und Bewertungen werden erst gemeinsam für alle sichtbar, wenn ein Backend eingerichtet ist. Es werden keine Beispielbeiträge als echte Community-Inhalte ausgegeben.</p></div>
+    </section>
 
-<script>
-function showPage(id,button){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  if(button) button.classList.add('active');
-  document.getElementById('sidebar').classList.remove('open');
-  window.scrollTo(0,0);
-}
-function toggleMenu(){
-  document.getElementById('sidebar').classList.toggle('open');
-}
-function filterCards(){
-  const q=document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('#homecards .card').forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(q)?'block':'none';
+    <!-- NACHRICHTEN -->
+    <section class="page" id="page-messages">
+      <div class="page-heading"><div><div class="eyebrow">Privater Austausch</div><h1><span class="accent">Nachrichten</span></h1></div></div>
+      <div class="notice info">Premium-Nutzer können neue Unterhaltungen starten. Kostenlose Nutzer können empfangene Nachrichten beantworten. Folgen ist dafür nicht erforderlich. Nutzer sollen andere blockieren und Nachrichten melden können.</div>
+      <div class="message-layout" style="margin-top:15px">
+        <div class="message-list"><h3 style="margin:2px 0 12px">Posteingang</h3><div class="empty-state"><div class="big-icon">✉</div><h3>Noch keine Nachrichten</h3><p>Deine Unterhaltungen erscheinen hier, sobald das Nachrichtensystem verbunden ist.</p></div></div>
+        <div class="message-view"><div class="message-placeholder"><div style="font-size:34px;color:var(--blue);margin-bottom:10px">✉</div><h3>Deine privaten Unterhaltungen</h3><p class="small">Wähle später links einen Chat aus oder starte eine neue Unterhaltung mit einem Nutzer.</p><button class="btn primary" disabled>Neue Nachricht · später verfügbar</button></div></div>
+      </div>
+      <p class="tiny" style="margin-top:12px">Private Nachrichten benötigen Konten, einen serverseitigen Nachrichtenspeicher sowie Melde- und Blockierfunktionen. Ohne Backend werden keine Nachrichten tatsächlich zugestellt.</p>
+    </section>
+
+    <!-- PROFIL -->
+    <section class="page" id="page-profile">
+      <div class="page-heading"><div><div class="eyebrow">Dein Konto</div><h1>Mein <span class="accent">Profil</span></h1></div><span class="pill">Private Übersicht</span></div>
+      <div class="card" style="margin-bottom:15px">
+        <div class="profile-head">
+          <div><div class="avatar large" id="profileAvatar">S</div><div id="profilePremiumBadge" style="margin-top:8px"></div></div>
+          <div><h2 id="profileHeadingName">Spieler</h2><div class="muted small" id="profileTierText" style="margin-top:5px">Kostenloses lokales Profil</div><div class="muted tiny" style="margin-top:8px">Deine Checklisten und Profildaten bleiben zunächst auf diesem Gerät.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Profil bearbeiten</h2>
+        <div class="form-grid" style="margin-top:14px">
+          <div class="form-group"><label for="profileName">Benutzername</label><input class="field" id="profileName" maxlength="24" placeholder="Dein Benutzername"></div>
+          <div class="form-group"><label for="profileAvatarFile">Profilbild (optional)</label><input class="field" id="profileAvatarFile" type="file" accept="image/png,image/jpeg,image/webp"></div>
+          <div class="form-group full"><button class="btn primary" id="saveProfile">Profil lokal speichern</button></div>
+        </div>
+        <div class="notice" style="margin-top:15px">Dies ist derzeit noch kein echtes Benutzerkonto. Ein öffentliches Profil mit eigenem Link, Login, geräteübergreifender Synchronisierung und einem sicheren Premium-Status benötigt später eine Benutzerverwaltung auf einem Server. Dein Fortschritt bleibt vorerst privat.</div>
+      </div>
+      <div class="card" style="margin-top:15px"><h2>Deine private Statistik</h2><div class="grid four" style="margin-top:14px"><div><div class="progress-number" id="profileTasksDone">0/0</div><div class="muted tiny">Erledigt / gesamt</div></div><div><div class="progress-number" id="profileProgress">0%</div><div class="muted tiny">Eigener Fortschritt</div></div><div><div class="progress-number" id="profileLevel">1</div><div class="muted tiny">Companion-Level</div></div><div><div class="progress-number" id="profileXP">0</div><div class="muted tiny">Erfahrungspunkte</div></div></div><p class="tiny" style="margin-top:12px">Dein Companion-Level basiert auf deiner Aktivität in dieser Website und ist nicht dein GTA-Spiellevel.</p></div>
+      <div class="card" style="margin-top:15px"><div class="card-top"><h2>Meine Favoriten</h2><span class="pill blue">Privat</span></div><div class="form-grid"><div class="form-group"><label for="favoriteName">Name / Titel</label><input class="field" id="favoriteName" maxlength="80" placeholder="z. B. Fahrzeug oder Geheimnis"></div><div class="form-group"><label for="favoriteCategory">Bereich</label><select id="favoriteCategory"><option>Missionen</option><option>Fahrzeuge</option><option>Charaktere</option><option>Geheimnisse</option><option>News</option><option>Fundorte</option><option>Sonstiges</option></select></div><div class="form-group full"><button class="btn primary" id="addFavorite">＋ Favorit speichern</button></div></div><div class="list" id="favoriteList" style="margin-top:14px"></div><div class="empty-state" id="favoriteEmpty" style="margin-top:12px"><h3>Noch keine Favoriten</h3><p>Speichere hier Dinge, die du später wiederfinden möchtest. Die Liste bleibt privat auf diesem Gerät.</p></div></div>
+      <div class="card" style="margin-top:15px"><h2>Öffentliches Profil</h2><p>Ein eigener Profil-Link ist geplant. Persönliche Fortschrittsstatistiken bleiben dabei privat und werden nicht in einer Rangliste veröffentlicht.</p><div class="notice info">Öffentliche Profile und ein echter Profil-Link werden erst mit dem späteren Kontosystem aktiviert.</div></div>
+    </section>
+
+    <!-- PREMIUM -->
+    <section class="page" id="page-premium">
+      <div class="page-heading"><div><div class="eyebrow">Mehr Möglichkeiten</div><h1>GTA6 <span class="accent">Premium</span></h1></div><span class="premium-badge">✦ PREMIUM</span></div>
+      <div class="hero" style="min-height:170px">
+        <div class="hero-content"><div class="eyebrow">Dein Companion. Erweiterte Funktionen.</div><h1 style="font-size:clamp(27px,3vw,39px)">Mehr Übersicht. <span class="accent">Mehr Möglichkeiten.</span></h1><p>Premium ist als optionale Mitgliedschaft geplant. Derzeit gibt es noch keine aktive Zahlung oder Freischaltung.</p></div>
+      </div>
+      <div class="grid two">
+        <div class="card"><div class="card-icon pink">✦</div><h3 style="margin-top:12px">Premium-Profilabzeichen</h3><p>Goldenes Premium-Symbol unter dem Profilbild und neben dem Namen. Es wird später ausschließlich serverseitig vergeben.</p></div>
+        <div class="card"><div class="card-icon">⌖</div><h3 style="margin-top:12px">Erweiterte Karte</h3><p>Mehr Filter, persönliche Markierungen und zusätzliche Möglichkeiten zur Organisation deiner Fundorte.</p></div>
+        <div class="card"><div class="card-icon pink">◉</div><h3 style="margin-top:12px">Community-Beiträge</h3><p>Beiträge erstellen und veröffentlichen. Alle Nutzer können den Feed ansehen und mit hilfreich / nicht hilfreich bewerten.</p></div>
+        <div class="card"><div class="card-icon">✉</div><h3 style="margin-top:12px">Private Nachrichten</h3><p>Neue Unterhaltungen starten. Kostenlose Nutzer können empfangene Nachrichten beantworten.</p></div>
+        <div class="card"><div class="card-icon pink">✧</div><h3 style="margin-top:12px">Erweiterte Checklisten</h3><p>Zusätzliche persönliche Listen und später Cloud-Synchronisierung über mehrere Geräte.</p></div>
+        <div class="card"><div class="card-icon">◈</div><h3 style="margin-top:12px">Ohne Werbung</h3><p>Die Premium-Version ist später ohne Werbeeinblendungen geplant.</p></div>
+        <div class="card"><div class="card-icon">◎</div><h3 style="margin-top:12px">KI-Missionsassistent</h3><p>Beschreibe dein Problem und erhalte Hinweise oder eine ausführlichere Hilfe zu bestätigten Missionsinformationen.</p></div>
+      </div>
+      <div class="notice" style="margin-top:16px">Premium-Mitgliedschaft, Bezahlung, Login und Freischaltung sind noch nicht eingerichtet. Wir zeigen deshalb keine erfundenen Preise und ermöglichen keine Selbstfreischaltung des Premium-Status. Dafür ist ein sicherer Server erforderlich.</div>
+    </section>
+
+    <div class="footer">GTA6 COMPANION ist ein unabhängiges Fanprojekt und nicht mit Rockstar Games verbunden. Inhalte, Marken und Spielmaterial gehören den jeweiligen Rechteinhabern. Bitte nur eigene Texte und rechtmäßig verwendete Bilder veröffentlichen.</div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+(() => {
+  'use strict';
+
+  /*
+    GTA6 COMPANION – Frontend
+    ------------------------
+    Lokale Funktionen (Profilname, Profilbild, Checkliste, Fortschritt und lokale Bewertungen)
+    speichern Daten nur im Browser (localStorage).
+
+    Für echte Konten, öffentliche Profile, gemeinsame Community-Beiträge, Nachrichten,
+    Premium-Zahlungen, KI-Moderation und den KI-Missionsassistenten ist ein sicheres Backend nötig.
+    Niemals Passwörter, Zahlungsdaten oder geheime API-Schlüssel in diese öffentliche Datei schreiben.
+
+    Spätere Backend-Konfiguration (Beispiel – noch nicht aktiv):
+    window.GTA6_COMPANION_CONFIG = { apiBaseUrl: 'https://dein-server.example/api' };
+    Premium-Status muss vom Server nach erfolgreicher Anmeldung geliefert und geprüft werden.
+  */
+
+  const STORAGE_KEY = 'gta6_companion_v2';
+  const defaultState = {
+    profile: { name: 'Spieler', avatar: '' },
+    tasks: [],
+    favorites: [],
+    votes: {}
+  };
+  let state = loadState();
+  let toastTimer;
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return structuredCloneSafe(defaultState);
+      const parsed = JSON.parse(raw);
+      return {
+        profile: { ...defaultState.profile, ...(parsed.profile || {}) },
+        tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
+        favorites: Array.isArray(parsed.favorites) ? parsed.favorites : [],
+        votes: parsed.votes && typeof parsed.votes === 'object' ? parsed.votes : {}
+      };
+    } catch (error) {
+      console.warn('Lokale Daten konnten nicht gelesen werden:', error);
+      return structuredCloneSafe(defaultState);
+    }
+  }
+  function structuredCloneSafe(value) { return JSON.parse(JSON.stringify(value)); }
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (error) { showToast('Speichern nicht möglich. Eventuell ist der Browser-Speicher voll.'); }
+  }
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2900);
+  }
+  function safeText(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  }
+  function initials(name) {
+    const clean = String(name || 'Spieler').trim();
+    return clean.slice(0, 2).toUpperCase() || 'S';
+  }
+  function setAvatar(element, name, imageData) {
+    if (!element) return;
+    element.innerHTML = '';
+    if (imageData) {
+      const image = document.createElement('img');
+      image.src = imageData;
+      image.alt = 'Profilbild';
+      element.appendChild(image);
+    } else {
+      element.textContent = initials(name);
+    }
+  }
+  function renderProfile() {
+    const name = state.profile.name || 'Spieler';
+    document.getElementById('sideName').textContent = name;
+    document.getElementById('profileHeadingName').textContent = name;
+    document.getElementById('profileName').value = name;
+    document.getElementById('sideTier').textContent = 'Kostenloses lokales Profil';
+    document.getElementById('profileTierText').textContent = 'Kostenloses lokales Profil';
+    document.getElementById('profilePremiumBadge').innerHTML = '';
+    setAvatar(document.getElementById('sideAvatar'), name, state.profile.avatar);
+    setAvatar(document.getElementById('profileAvatar'), name, state.profile.avatar);
+  }
+  function getProgress() {
+    const total = state.tasks.length;
+    const done = state.tasks.filter(task => task.done).length;
+    const percent = total ? Math.round(done / total * 100) : 0;
+    return { total, done, percent };
+  }
+  function renderProgress() {
+    const { total, done, percent } = getProgress();
+    document.getElementById('homeProgress').textContent = percent + ' %';
+    document.getElementById('homeProgressBar').style.width = percent + '%';
+    document.getElementById('homeProgressMeta').textContent = `${done} von ${total} eigenen Aufgaben erledigt`;
+    document.getElementById('checkProgress').textContent = percent + ' %';
+    document.getElementById('checkProgressBar').style.width = percent + '%';
+    document.getElementById('checkProgressText').textContent = `${done} von ${total} Aufgaben erledigt`;
+    document.getElementById('checkRemaining').textContent = total ? `${total - done} offen` : 'Noch keine Aufgaben';
+    document.getElementById('profileTasksDone').textContent = `${done}/${total}`;
+    document.getElementById('profileProgress').textContent = percent + '%';
+    const xp = done * 10;
+    document.getElementById('profileXP').textContent = xp;
+    document.getElementById('profileLevel').textContent = Math.floor(xp / 100) + 1;
+  }
+  function renderFavorites() {
+    const list = document.getElementById('favoriteList');
+    const empty = document.getElementById('favoriteEmpty');
+    if (!list || !empty) return;
+    list.innerHTML = '';
+    empty.classList.toggle('hidden', state.favorites.length > 0);
+    state.favorites.forEach((favorite, index) => {
+      const row = document.createElement('div');
+      row.className = 'list-row';
+      const icon = document.createElement('div'); icon.className = 'card-icon pink'; icon.textContent = '✦';
+      const info = document.createElement('div'); info.className = 'grow';
+      const title = document.createElement('strong'); title.textContent = favorite.name;
+      const meta = document.createElement('small'); meta.textContent = favorite.category;
+      info.append(title, meta);
+      const remove = document.createElement('button'); remove.className = 'task-remove'; remove.type = 'button'; remove.textContent = '×'; remove.title = 'Favorit entfernen';
+      remove.addEventListener('click', () => { state.favorites.splice(index, 1); saveState(); renderFavorites(); });
+      row.append(icon, info, remove); list.appendChild(row);
+    });
+  }
+  function addFavorite() {
+    const input = document.getElementById('favoriteName');
+    const name = input.value.trim();
+    if (!name) { showToast('Bitte gib einen Namen für den Favoriten ein.'); input.focus(); return; }
+    state.favorites.unshift({ name, category: document.getElementById('favoriteCategory').value });
+    input.value = ''; saveState(); renderFavorites(); showToast('Favorit wurde privat gespeichert.');
+  }
+
+  function renderTasks() {
+    const container = document.getElementById('taskList');
+    const empty = document.getElementById('taskEmpty');
+    const search = (document.getElementById('taskSearch').value || '').toLocaleLowerCase('de');
+    const filter = document.getElementById('taskFilter').value;
+    const filtered = state.tasks.filter(task => {
+      const matchesSearch = `${task.name} ${task.category}`.toLocaleLowerCase('de').includes(search);
+      const matchesFilter = filter === 'all' || (filter === 'done' ? task.done : !task.done);
+      return matchesSearch && matchesFilter;
+    });
+    container.innerHTML = '';
+    empty.classList.toggle('hidden', filtered.length > 0);
+    if (state.tasks.length > 0 && filtered.length === 0) {
+      empty.classList.remove('hidden');
+      empty.querySelector('h3').textContent = 'Keine passenden Aufgaben';
+      empty.querySelector('p').textContent = 'Ändere den Suchbegriff oder den ausgewählten Filter.';
+    } else if (state.tasks.length === 0) {
+      empty.querySelector('h3').textContent = 'Deine Checkliste ist noch leer';
+      empty.querySelector('p').textContent = 'Füge eigene Aufgaben hinzu. Abgehakte Aufgaben werden automatisch gespeichert.';
+    }
+    filtered.forEach(task => {
+      const row = document.createElement('label');
+      row.className = 'task' + (task.done ? ' done' : '');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox'; checkbox.checked = Boolean(task.done);
+      checkbox.setAttribute('aria-label', 'Aufgabe erledigt');
+      checkbox.addEventListener('change', () => {
+        const original = state.tasks.find(item => item.id === task.id);
+        if (original) original.done = checkbox.checked;
+        saveState(); renderTasks(); renderProgress();
+      });
+      const name = document.createElement('span'); name.className = 'task-name'; name.textContent = task.name;
+      const category = document.createElement('span'); category.className = 'task-cat'; category.textContent = task.category;
+      const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'task-remove'; remove.textContent = '×'; remove.title = 'Aufgabe löschen';
+      remove.addEventListener('click', event => {
+        event.preventDefault(); event.stopPropagation();
+        state.tasks = state.tasks.filter(item => item.id !== task.id);
+        saveState(); renderTasks(); renderProgress();
+      });
+      row.append(checkbox, name, category, remove);
+      container.appendChild(row);
+    });
+    renderProgress();
+  }
+  function addTask() {
+    const input = document.getElementById('taskInput');
+    const name = input.value.trim();
+    if (!name) { showToast('Bitte gib zuerst eine Aufgabe ein.'); input.focus(); return; }
+    state.tasks.unshift({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,7), name, category: document.getElementById('taskCategory').value, done: false });
+    input.value = '';
+    saveState(); renderTasks(); showToast('Aufgabe wurde lokal gespeichert.');
+  }
+
+  const pages = ['home','map','missions','characters','vehicles','secrets','news','checklist','community','messages','profile','premium'];
+  function showPage(page) {
+    if (!pages.includes(page)) return;
+    document.querySelectorAll('.page').forEach(section => section.classList.toggle('active', section.id === 'page-' + page));
+    document.querySelectorAll('.nav button[data-page]').forEach(button => button.classList.toggle('active', button.dataset.page === page));
+    closeMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (page === 'profile') { renderProfile(); renderFavorites(); renderProgress(); }
+    if (page === 'checklist') renderTasks();
+  }
+  function closeMenu() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+  function openMenu() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('show');
+  }
+
+  document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => showPage(button.dataset.page)));
+  document.querySelectorAll('[data-go]').forEach(element => element.addEventListener('click', () => showPage(element.dataset.go)));
+  document.getElementById('profileQuick').addEventListener('click', () => showPage('profile'));
+  document.getElementById('menuBtn').addEventListener('click', openMenu);
+  document.getElementById('overlay').addEventListener('click', closeMenu);
+
+  document.getElementById('addTaskBtn').addEventListener('click', addTask);
+  document.getElementById('addFavorite').addEventListener('click', addFavorite);
+  document.getElementById('favoriteName').addEventListener('keydown', event => { if (event.key === 'Enter') addFavorite(); });
+  document.getElementById('taskInput').addEventListener('keydown', event => { if (event.key === 'Enter') addTask(); });
+  document.getElementById('taskSearch').addEventListener('input', renderTasks);
+  document.getElementById('taskFilter').addEventListener('change', renderTasks);
+  document.getElementById('clearDoneBtn').addEventListener('click', () => {
+    const count = state.tasks.filter(task => task.done).length;
+    if (!count) { showToast('Es gibt noch keine erledigten Aufgaben.'); return; }
+    if (!confirm(`Möchtest du ${count} erledigte Aufgabe(n) löschen?`)) return;
+    state.tasks = state.tasks.filter(task => !task.done);
+    saveState(); renderTasks(); showToast('Erledigte Aufgaben wurden gelöscht.');
   });
-}
-let tasks=JSON.parse(localStorage.getItem('gtaTasks')||'[]');
-function renderTasks(){
-  document.getElementById('tasks').innerHTML='';
-  tasks.forEach((t,i)=>{
-    const row=document.createElement('div');
-    row.className='item';
-    const cb=document.createElement('input');
-    cb.type='checkbox';cb.checked=t.done;
-    cb.onchange=()=>{tasks[i].done=cb.checked;saveTasks()};
-    const label=document.createElement('span');
-    label.textContent=t.name;
-    if(t.done)label.style.textDecoration='line-through';
-    const del=document.createElement('button');
-    del.textContent=' ×';del.onclick=()=>{tasks.splice(i,1);saveTasks()};
-    row.append(cb,label,del);
-    document.getElementById('tasks').append(row);
+
+  document.getElementById('saveProfile').addEventListener('click', () => {
+    const name = document.getElementById('profileName').value.trim();
+    if (!name) { showToast('Bitte gib einen Benutzernamen ein.'); return; }
+    state.profile.name = name;
+    saveState(); renderProfile(); showToast('Profil wurde auf diesem Gerät gespeichert.');
   });
-}
-function addTask(){
-  const input=document.getElementById('newtask');
-  if(!input.value.trim())return;
-  tasks.push({name:input.value.trim(),done:false});
-  input.value='';saveTasks();
-}
-function saveTasks(){
-  localStorage.setItem('gtaTasks',JSON.stringify(tasks));
+  document.getElementById('profileAvatarFile').addEventListener('change', event => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (!['image/jpeg','image/png','image/webp'].includes(file.type)) { showToast('Bitte wähle ein JPG-, PNG- oder WebP-Bild.'); event.target.value = ''; return; }
+    if (file.size > 1.5 * 1024 * 1024) { showToast('Das Bild ist zu groß. Bitte maximal 1,5 MB auswählen.'); event.target.value = ''; return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.profile.avatar = String(reader.result || '');
+      saveState(); renderProfile(); showToast('Profilbild wurde lokal gespeichert.');
+    };
+    reader.onerror = () => showToast('Das Bild konnte nicht gelesen werden.');
+    reader.readAsDataURL(file);
+  });
+
+  // Die Suchfelder sind bereits vorbereitet. Sie zeigen bewusst keine erfundenen Datensätze an.
+  document.getElementById('globalSearch').addEventListener('keydown', event => {
+    if (event.key !== 'Enter') return;
+    const query = event.target.value.trim().toLocaleLowerCase('de');
+    if (!query) return;
+    const searchable = [
+      ['map','karte leonida fundort'], ['missions','mission missionen story nebenmission'],
+      ['characters','charakter charaktere person'], ['vehicles','fahrzeug fahrzeuge auto motorrad'],
+      ['secrets','geheimnis geheimnisse easter egg fundort'], ['news','news nachrichten'],
+      ['checklist','checkliste fortschritt aufgaben'], ['community','community beitrag diskussion frage'],
+      ['messages','nachricht nachrichten postfach'], ['profile','profil konto'], ['premium','premium mitgliedschaft']
+    ];
+    const match = searchable.find(([, words]) => words.includes(query) || query.split(/\s+/).some(word => word.length > 2 && words.includes(word)));
+    if (match) showPage(match[0]);
+    else showToast('Kein passender Bereich gefunden.');
+  });
+
+  // Ein echtes Backend kann später über dieselbe Domain angebunden werden.
+  // Solange kein Server existiert, bleiben Community, Nachrichten und KI bewusst deaktiviert.
+  async function backendRequest(path, options = {}) {
+    const base = window.GTA6_COMPANION_CONFIG && window.GTA6_COMPANION_CONFIG.apiBaseUrl;
+    if (!base) throw new Error('Backend noch nicht verbunden');
+    const response = await fetch(base.replace(/\/$/, '') + path, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      credentials: 'include'
+    });
+    if (!response.ok) throw new Error('Serveranfrage fehlgeschlagen');
+    return response.status === 204 ? null : response.json();
+  }
+
+  renderProfile();
+  renderFavorites();
   renderTasks();
-}
-renderTasks();
+})();
 </script>
 </body>
 </html>
