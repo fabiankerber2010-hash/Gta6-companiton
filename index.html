@@ -5,255 +5,256 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GTA6 COMPANION</title>
-
 <style>
-* {
-  box-sizing: border-box;
+:root {
+  --bg:#101116;
+  --panel:#191b23;
+  --line:#292c36;
+  --pink:#ed79ad;
+  --blue:#65c9ed;
+  --text:#f4f4f7;
+  --muted:#999daa;
 }
-
-body {
-  margin: 0;
-  background: #101216;
-  color: #f4f4f4;
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;
 }
-
-header {
-  padding: 20px 7%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #171a20;
-  position: sticky;
-  top: 0;
+.sidebar{
+  position:fixed;inset:0 auto 0 0;width:230px;
+  background:#15171e;border-right:1px solid var(--line);
+  padding:25px 15px;z-index:5;
 }
-
-.logo {
-  font-size: 22px;
-  font-weight: 900;
-  color: #8ee66b;
+.logo{font-size:19px;font-weight:bold;padding:8px 10px 30px}
+.logo span{color:var(--pink)}
+.navlabel{
+  color:var(--muted);font-size:11px;
+  text-transform:uppercase;letter-spacing:1.5px;
+  padding:12px 10px;
 }
-
-nav a {
-  color: #ddd;
-  text-decoration: none;
-  margin-left: 15px;
-  font-size: 14px;
+.nav button{
+  display:block;width:100%;text-align:left;
+  border:0;background:transparent;color:#c8cad2;
+  padding:13px 12px;margin:3px 0;border-radius:8px;
+  font-size:14px;cursor:pointer;
 }
-
-.hero {
-  padding: 85px 8%;
-  background: linear-gradient(110deg, #18251c, #11151b 70%);
+.nav button.active,.nav button:hover{
+  background:#252733;color:white;
+  border-left:3px solid var(--pink);
 }
-
-.hero h1 {
-  font-size: clamp(38px, 7vw, 70px);
-  margin: 0 0 15px;
+.nav button span{margin-right:10px}
+.main{margin-left:230px;padding:28px 35px;max-width:1400px}
+.top{
+  display:flex;justify-content:space-between;
+  align-items:center;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:30px;
 }
-
-.hero h1 span {
-  color: #8ee66b;
+.top small{color:var(--muted)}
+.menu{display:none}
+.hero{
+  background:linear-gradient(110deg,#25202b,#18242e);
+  border:1px solid #34313e;border-radius:14px;
+  padding:55px 35px;margin-bottom:30px;
 }
-
-.hero p {
-  color: #c2c7c2;
-  max-width: 550px;
-  line-height: 1.6;
+.eyebrow{color:var(--blue);letter-spacing:2px;font-size:12px}
+h1{font-size:clamp(30px,5vw,52px);margin:14px 0}
+h1 span{color:var(--pink)}
+p{color:#b9bbc5;line-height:1.6}
+.section-title{font-size:22px;margin:30px 0 17px}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:15px;
 }
-
-button {
-  background: #8ee66b;
-  color: #101216;
-  border: 0;
-  padding: 13px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
+.card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:22px;cursor:pointer;
+  transition:.2s;
 }
-
-main {
-  max-width: 1100px;
-  margin: auto;
-  padding: 35px 20px;
+.card:hover{border-color:var(--blue);transform:translateY(-2px)}
+.card h3{margin-top:0}
+.card small{color:var(--pink)}
+input{
+  width:100%;padding:14px;background:var(--panel);
+  border:1px solid var(--line);border-radius:9px;
+  color:white;font-size:15px;margin:12px 0;
 }
-
-h2 {
-  margin-top: 35px;
+.page{display:none}
+.page.active{display:block}
+button.action{
+  background:var(--pink);color:#17131a;border:0;
+  border-radius:8px;padding:12px 17px;
+  font-weight:bold;cursor:pointer;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+.item{
+  padding:15px;background:var(--panel);
+  border:1px solid var(--line);border-radius:9px;
+  margin:10px 0;
 }
-
-.card {
-  background: #1b2027;
-  padding: 22px;
-  border: 1px solid #303740;
-  border-radius: 13px;
-}
-
-.card h3 {
-  margin-top: 0;
-  color: #8ee66b;
-}
-
-.card p {
-  color: #bdc3ca;
-  line-height: 1.5;
-}
-
-input {
-  width: 100%;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #454d58;
-  background: #1b2027;
-  color: white;
-  margin: 12px 0;
-}
-
-section {
-  scroll-margin-top: 80px;
-}
-
-.premium {
-  background: linear-gradient(120deg, #283b25, #202a32);
-  border: 1px solid #8ee66b;
-}
-
-footer {
-  text-align: center;
-  padding: 35px;
-  color: #89919b;
-  background: #171a20;
-  margin-top: 50px;
-}
-
-.small {
-  font-size: 12px;
-  color: #89919b;
+.item input{width:auto;margin-right:10px}
+.tag{color:var(--blue);font-size:12px}
+footer{color:var(--muted);font-size:12px;margin-top:55px}
+@media(max-width:700px){
+  .sidebar{
+    width:245px;transform:translateX(-100%);
+    transition:.2s;box-shadow:none;
+  }
+  .sidebar.open{transform:translateX(0);box-shadow:10px 0 40px #0008}
+  .main{margin-left:0;padding:18px}
+  .menu{display:block;background:transparent;color:white;
+    border:1px solid var(--line);padding:9px 13px;
+    border-radius:7px;font-size:19px}
+  .hero{padding:38px 22px}
 }
 </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">GTA6 COMPANION</div>
-  <nav>
-    <a href="#guides">Guides</a>
-    <a href="#map">Karte</a>
-    <a href="#premium">Premium</a>
+<aside class="sidebar" id="sidebar">
+  <div class="logo">GTA6 <span>COMPANION</span></div>
+  <div class="navlabel">Hauptmenü</div>
+  <nav class="nav">
+    <button class="active" onclick="showPage('home',this)">⌂ Startseite</button>
+    <button onclick="showPage('map',this)">⌖ Karte</button>
+    <button onclick="showPage('missions',this)">▤ Missionen</button>
+    <button onclick="showPage('characters',this)">♙ Charaktere</button>
+    <button onclick="showPage('vehicles',this)">◇ Fahrzeuge</button>
+    <button onclick="showPage('secrets',this)">✧ Geheimnisse</button>
+    <button onclick="showPage('news',this)">◷ News</button>
+    <div class="navlabel">Persönlich</div>
+    <button onclick="showPage('checklist',this)">☑ Checkliste</button>
+    <button onclick="showPage('premium',this)">☆ Premium</button>
   </nav>
-</header>
+</aside>
 
-<section class="hero">
-  <p>DEIN BEGLEITER DURCH LEONIDA</p>
-  <h1>WELCOME TO<br><span>GTA6 COMPANION</span></h1>
-  <p>
-    Deine unabhängige Fan-Plattform für Grand Theft Auto VI.
-    Entdecke Guides, Informationen, Orte und Geheimnisse.
-  </p>
-  <a href="#guides">
-    <button>Website entdecken</button>
-  </a>
-</section>
-
-<main>
-
-<section id="guides">
-  <h2>Entdecke GTA 6</h2>
-
-  <input
-    id="search"
-    placeholder="Suche nach Guides, Orten und Themen..."
-    oninput="searchCards()"
-  >
-
-  <div class="grid" id="cards">
-
-    <div class="card">
-      <h3>Missionen</h3>
-      <p>Missionen, Tipps und Schritt-für-Schritt-Lösungen.</p>
+<main class="main">
+  <div class="top">
+    <div>
+      <strong>GTA6 COMPANION</strong><br>
+      <small>Dein Begleiter durch Leonida</small>
     </div>
-
-    <div class="card">
-      <h3>Charaktere</h3>
-      <p>Informationen zu Lucia, Jason und weiteren Figuren.</p>
-    </div>
-
-    <div class="card">
-      <h3>Geheimnisse</h3>
-      <p>Entdecke versteckte Orte und bestätigte Geheimnisse.</p>
-    </div>
-
-    <div class="card">
-      <h3>Fahrzeuge</h3>
-      <p>Informationen zu Autos, Motorrädern und mehr.</p>
-    </div>
-
+    <button class="menu" onclick="toggleMenu()">☰</button>
   </div>
-</section>
 
-<section id="map">
-  <h2>Interaktive Karte</h2>
+  <section id="home" class="page active">
+    <div class="hero">
+      <div class="eyebrow">WELCOME TO LEONIDA</div>
+      <h1>GTA6 <span>COMPANION</span></h1>
+      <p>Deine unabhängige Plattform für Informationen, Guides und Entdeckungen rund um Grand Theft Auto VI.</p>
+      <button class="action" onclick="showPage('missions')">Guides entdecken →</button>
+    </div>
+    <h2 class="section-title">Entdecken</h2>
+    <input id="search" placeholder="Bereiche durchsuchen..." oninput="filterCards()">
+    <div class="grid" id="homecards">
+      <div class="card" onclick="showPage('map')"><small>EXPLORE</small><h3>Die Karte</h3><p>Entdecke die Welt von Leonida.</p></div>
+      <div class="card" onclick="showPage('missions')"><small>GUIDES</small><h3>Missionen</h3><p>Übersichten und Lösungen.</p></div>
+      <div class="card" onclick="showPage('vehicles')"><small>DATABASE</small><h3>Fahrzeuge</h3><p>Die Fahrzeugdatenbank.</p></div>
+      <div class="card" onclick="showPage('secrets')"><small>DISCOVER</small><h3>Geheimnisse</h3><p>Besondere Orte und Entdeckungen.</p></div>
+    </div>
+  </section>
 
-  <div class="card">
-    <h3>Leonida entdecken</h3>
-    <p>
-      Die interaktive Karte ist in Planung.
-      Bestätigte Orte werden ergänzt, sobald verlässliche
-      Informationen vorliegen.
-    </p>
-  </div>
-</section>
+  <section id="map" class="page">
+    <h1>Die <span style="color:var(--blue)">Karte</span></h1>
+    <div class="card"><h3>Leonida entdecken</h3><p>Die interaktive Karte wird noch entwickelt. Bestätigte Orte werden nach und nach ergänzt.</p></div>
+  </section>
 
-<section id="premium">
-  <h2>GTA6 COMPANION Premium</h2>
+  <section id="missions" class="page">
+    <h1>Missionen</h1>
+    <p>Missionen und Lösungen an einem Ort.</p>
+    <div class="card"><h3>Missionsdatenbank</h3><p>Die vollständigen Missionsinformationen werden ergänzt, sobald sie verlässlich verfügbar sind.</p></div>
+  </section>
 
-  <div class="card premium">
-    <h3>Mehr Möglichkeiten. Ein besserer Überblick.</h3>
+  <section id="characters" class="page">
+    <h1>Charaktere</h1>
+    <div class="grid">
+      <div class="card"><h3>Lucia Caminos</h3><p>Charakterprofil – weitere bestätigte Informationen folgen.</p></div>
+      <div class="card"><h3>Jason Duval</h3><p>Charakterprofil – weitere bestätigte Informationen folgen.</p></div>
+    </div>
+  </section>
 
-    <p>• Werbefreie Nutzung</p>
-    <p>• Erweiterte Kartenfilter und eigene Markierungen</p>
-    <p>• Persönliche Checklisten und Fortschritt</p>
-    <p>• Gespeicherte Sammlungen und Cloud-Synchronisierung</p>
-    <p>• Benachrichtigungen zu neuen bestätigten Guides</p>
+  <section id="vehicles" class="page">
+    <h1>Fahrzeuge</h1>
+    <div class="card"><h3>Fahrzeugdatenbank</h3><p>Eine Übersicht bestätigter Fahrzeuge ist in Planung.</p></div>
+  </section>
 
-    <p class="small">
-      Premium ist hier nur eine Vorschau.
-      Es gibt noch keine Anmeldung oder Bezahlfunktion.
-    </p>
+  <section id="secrets" class="page">
+    <h1>Geheimnisse</h1>
+    <div class="card"><h3>Entdeckungen</h3><p>Hier sammeln wir verifizierte Geheimnisse und versteckte Orte.</p></div>
+  </section>
 
-    <button onclick="alert('Premium kommt bald!')">
-      Premium ansehen
-    </button>
-  </div>
-</section>
+  <section id="news" class="page">
+    <h1>News</h1>
+    <div class="card"><h3>Neuigkeiten</h3><p>Aktuelle und überprüfte GTA-6-Informationen werden hier veröffentlicht.</p></div>
+  </section>
 
+  <section id="checklist" class="page">
+    <h1>Meine Checkliste</h1>
+    <p>Deine Einträge bleiben auf diesem Gerät gespeichert.</p>
+    <input id="newtask" placeholder="Neuen Eintrag hinzufügen...">
+    <button class="action" onclick="addTask()">Hinzufügen</button>
+    <div id="tasks"></div>
+  </section>
+
+  <section id="premium" class="page">
+    <h1>Premium <span style="color:var(--pink)">Mitgliedschaft</span></h1>
+    <div class="card">
+      <h3>GTA6 COMPANION Premium</h3>
+      <p>Werbefreiheit, erweiterte Kartenfunktionen, persönliche Sammlungen und Cloud-Synchronisierung sind geplant.</p>
+      <p class="tag">PREVIEW – Noch keine echte Mitgliedschaft oder Zahlung</p>
+    </div>
+  </section>
+
+  <footer>
+    GTA6 COMPANION · Unabhängiges Fanprojekt · Nicht mit Rockstar Games verbunden.
+  </footer>
 </main>
 
-<footer>
-  <strong>GTA6 COMPANION</strong>
-  <p>Ein unabhängiges Fanprojekt. Nicht mit Rockstar Games verbunden.</p>
-  <p class="small">
-    Alle Inhalte werden nach Möglichkeit anhand verlässlicher Quellen geprüft.
-  </p>
-</footer>
-
 <script>
-function searchCards() {
-  const q = document.getElementById("search").value.toLowerCase();
-
-  document.querySelectorAll("#cards .card").forEach(card => {
-    card.style.display = card.innerText.toLowerCase().includes(q)
-      ? "block"
-      : "none";
+function showPage(id,button){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(button) button.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo(0,0);
+}
+function toggleMenu(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function filterCards(){
+  const q=document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('#homecards .card').forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(q)?'block':'none';
   });
 }
+let tasks=JSON.parse(localStorage.getItem('gtaTasks')||'[]');
+function renderTasks(){
+  document.getElementById('tasks').innerHTML='';
+  tasks.forEach((t,i)=>{
+    const row=document.createElement('div');
+    row.className='item';
+    const cb=document.createElement('input');
+    cb.type='checkbox';cb.checked=t.done;
+    cb.onchange=()=>{tasks[i].done=cb.checked;saveTasks()};
+    const label=document.createElement('span');
+    label.textContent=t.name;
+    if(t.done)label.style.textDecoration='line-through';
+    const del=document.createElement('button');
+    del.textContent=' ×';del.onclick=()=>{tasks.splice(i,1);saveTasks()};
+    row.append(cb,label,del);
+    document.getElementById('tasks').append(row);
+  });
+}
+function addTask(){
+  const input=document.getElementById('newtask');
+  if(!input.value.trim())return;
+  tasks.push({name:input.value.trim(),done:false});
+  input.value='';saveTasks();
+}
+function saveTasks(){
+  localStorage.setItem('gtaTasks',JSON.stringify(tasks));
+  renderTasks();
+}
+renderTasks();
 </script>
-
 </body>
 </html>
